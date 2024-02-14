@@ -1,0 +1,22 @@
+/* style.css */
+body {
+    background-color: white;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 80px;
+    text-align: center;
+    color: #333;
+    margin-top: 2vh; /* Adjust the margin-top to center the text vertically */
+    transform: translateY(-50%);
+}
+p{
+    font-family: "Lobster", sans-serif;
+    font-size: 50px;
+    text-align: center;
+    
+    margin-top: 30vh; /* Adjust the margin-top to center the text vertically */
+    transform: translateY(-50%);
+
+}

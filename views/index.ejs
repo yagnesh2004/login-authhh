@@ -1,0 +1,76 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blinkit</title>
+    <link rel="stylesheet" href="/css/index.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"><!-- Replace with the actual path to your CSS file -->
+    
+    <style>
+
+        body {
+            font-family: "Poppins", sans-serif;;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000000;
+            background-color: #fbe043; /* Blue color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: hsl(51, 100%, 75%); /* Darker blue on hover */
+        }
+
+        /* Style for the "Sign Up" button */
+        button.signup {
+            background-color: #2ecc71; /* Green color */
+        }
+
+        button.signup:hover {
+            background-color: #3c5546; /* Darker green on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to Blinkit App</h1>
+    
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/signup">
+            <button style="margin-right: 10px;">Sign Up</button>
+        </a>
+        <a href="/login">
+            <button>Login</button>
+        </a>
+
+    </div>
+</body>
+
+</html>

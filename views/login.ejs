@@ -1,0 +1,39 @@
+<!-- views/login.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <form action="/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username"required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your username"required>
+        <button onclick="playAudio()" type="submit">Login</button>
+        <p>Create account ? <a href="/signup">Signup</a></p>
+    </form>
+    <audio id="myAudio">
+        <source src="click.wav" type="audio/mpeg">
+
+    </audio>
+ <script src="back.js">
+        var x = document.getElementById("myAudio"); 
+
+        function playAudio() { 
+ 
+        x.play(); 
+    } 
+ </script>
+</body>
+
+</html>
