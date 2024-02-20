@@ -1,11 +1,11 @@
 /* public/css/style.css */
-
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 body {
     font-family: "Playfair Display", serif;
     background-color: #f2f2f2;
     margin: 0;
     padding: 0;
-    display: flex;
+    display:grid;
     align-items: center;
     justify-content: center;
     height: 100vh;
@@ -14,7 +14,7 @@ body {
 form {
     max-width: 400px;
     width: 100%;
-    padding: 20px;
+    padding: 30px 50px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -42,7 +42,7 @@ button {
     
     width: 100%;
     padding: 10px;
-    background-color: #4338ca; /* Violet color */
+    background-color: #0d0c22; /* Violet color */
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -50,10 +50,27 @@ button {
 }
 
 button:hover {
-    background-color: #5e53d9; /* Darker shade on hover */
+    background-color: #3b3954; /* Darker shade on hover */
 }
 .btn:focus{
     background-color: #1f1c44;
 
 
+}
+.signup-header {
+    text-align: center;
+    margin-top: 30px; /* Adjust the margin-top value as needed */
+
+}
+
+.signup-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    color: #333; /* Adjust the color as needed */
+}
+/**/
+
+.g-signin2 {
+    width: 200px; /* Make the Google Sign-In button take the full width */
 }

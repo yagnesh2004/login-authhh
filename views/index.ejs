@@ -13,9 +13,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"><!-- Replace with the actual path to your CSS file -->
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
         body {
-            font-family: "Poppins", sans-serif;;
+            font-family: "JetBrains Mono", monospace;
             background-color: #f0f0f0;
             margin: 0;
             padding: 0;
@@ -23,6 +24,7 @@
         }
 
         h1 {
+            font-family: "JetBrains Mono", monospace;
             color: #333;
         }
 
@@ -31,20 +33,23 @@
         }
 
         button {
+            font-family:"Poppins", sans-serif;
             display: inline-block;
             padding: 10px 20px;
             font-size: 16px;
-            font-weight: bold;
-            color: #000000;
-            background-color: #fbe043; /* Blue color */
+            font-weight: normal;
+            color: #ffffff;
+            background-color: #0d0c22; /* Blue color */
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 15%;
+            padding: 10px;
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: hsl(51, 100%, 75%); /* Darker blue on hover */
+            background-color: hsl(244, 20%, 17%); /* Darker blue on hover */
         }
 
         /* Style for the "Sign Up" button */
@@ -59,7 +64,8 @@
 </head>
 
 <body>
-    <h1>Welcome to Blinkit App</h1>
+    <div id="loader" class="loader"></div>
+    <h1>Welcome to Dork</h1>
     
 
     <div style="text-align: center; margin-top: 20px;">
@@ -72,5 +78,18 @@
 
     </div>
 </body>
+<!-- Add this to your HTML file -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Show the loader initially
+        var loader = document.getElementById("loader");
+
+        // Hide the loader after 4 seconds
+        setTimeout(function () {
+            loader.style.display = "none";
+        },3000);
+    });
+</script>
+
 
 </html>

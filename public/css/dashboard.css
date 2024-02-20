@@ -12,7 +12,7 @@ h1 {
     transform: translateY(-50%);
 }
 p{
-    font-family: "Lobster", sans-serif;
+    font-family: "JetBrains Mono", monospace;
     font-size: 50px;
     text-align: center;
     

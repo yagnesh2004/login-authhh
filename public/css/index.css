@@ -1,5 +1,5 @@
 /* styles.css */
-
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 body {
     font-family:"Lobster", sans-serif;
 }
@@ -35,7 +35,38 @@ h1 {
     color: #fff;
     font-style: "Poppins", sans-serif;
     background-color: #000000; /* Set the background color */
-    border: none;
+    border: black;
     border-radius: 5px;
     cursor: pointer;
+}
+button:hover {
+    background-color: hsl(51, 100%, 75%); /* Darker blue on hover */
+}
+
+/* Style for the "Sign Up" button */
+button.signup {
+    background-color: #2ecc71; /* Green color */
+}
+
+button.signup:hover {
+    background-color: #3c5546; /* Darker green on hover */
+}
+
+
+
+/* styles.css */
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+    margin-top: 50vh;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
