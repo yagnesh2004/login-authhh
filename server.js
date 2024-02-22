@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const { Pool } = require('pg');
+const axios = require('axios');
+
 const app = express();
 const port = 3000;
-const path = require('path');
-
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,15 +24,18 @@ const pool = new Pool({
 
 app.set('view engine', 'ejs');
 
-// Basic route to render the home page
+// Middleware to check for authentication
+const requireAuth = (req, res, next) => {
+    if (req.session.userId) {
+        return next();
+    }
+    res.redirect('/login');
+};
+
+// Render the home page
 app.get('/', (req, res) => {
     res.render('index.ejs');
 });
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-// Add these routes inside server.js
 
 // Render the signup form
 app.get('/signup', (req, res) => {
@@ -41,15 +44,30 @@ app.get('/signup', (req, res) => {
 
 // Handle signup form submission
 app.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     try {
-        await pool.query('INSERT INTO userss (username, password) VALUES ($1, $2)', [username, hashedPassword]);
+        // Data Validation
+        const { username, password } = req.body;
+
+        if (!username || !password) {
+            return res.status(400).send('Username and password are required');
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Database Insertion
+        const result = await pool.query('INSERT INTO userss (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword]);
+
+        // Redirect on Success
         res.redirect('/login');
     } catch (error) {
         console.error(error);
-        res.redirect('/signup');
+
+        if (error.code === '23502' && error.column === 'username') {
+            return res.status(400).send('Username cannot be null');
+        }
+
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -59,8 +77,6 @@ app.get('/login', (req, res) => {
 });
 
 // Handle login form submission
-// Handle login form submission
-// Handle login form submission
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -68,16 +84,10 @@ app.post('/login', async (req, res) => {
         const result = await pool.query('SELECT * FROM userss WHERE username = $1', [username]);
 
         if (result.rows.length > 0) {
-            const { username: fetchedUsername } = result.rows[0];
-            console.log(fetchedUsername);
-
             const match = await bcrypt.compare(password, result.rows[0].password);
             if (match) {
                 req.session.userId = result.rows[0].id;
-                console.log(req.session.userId);
-
-                // Pass the fetchedUsername as a query parameter in the redirect
-                res.redirect(`/dashboard?uname=${encodeURIComponent(fetchedUsername)}`);
+                res.redirect(`/dashboard?uname=${encodeURIComponent(username)}`);
             } else {
                 res.render('login.ejs', { error: 'Invalid username or password' });
             }
@@ -90,21 +100,20 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Add this middleware inside server.js
-
-const requireAuth = (req, res, next) => {
-    if (req.session.userId) {
-        return next();
+// Protected route
+app.get('/dashboard', requireAuth, async (req, res) => {
+    try {
+        const topic = req.query.uname; // Assuming you passed uname as a query parameter
+        const response = await axios.get(`https://codeforces.com/api/problemset.problems?tags=${topic}`);
+        const problems = response.data.result.problems;
+        res.render('dashboard.ejs', { uname: topic, problems, title: 'Dashboard' });
+    } catch (error) {
+        console.error('Failed to make request:', error.message);
+        res.render('dashboard.ejs', {
+            error: 'Failed to fetch data from the API.',
+            title: 'Dashboard',
+        });
     }
-    res.redirect('/login');
-};
-
-// Example protected route
-// Example protected route
-app.get('/dashboard', requireAuth, (req, res) => {
-    const fetchedUsername = req.query.uname; // Assuming you passed uname as a query parameter
-    // Render the dashboard view and pass fetchedUsername
-    res.render('dashboard.ejs', { uname: fetchedUsername });
 });
 
 // Handle logout
@@ -115,4 +124,8 @@ app.get('/logout', (req, res) => {
         }
         res.redirect('/login');
     });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });

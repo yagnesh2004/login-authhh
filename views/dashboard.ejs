@@ -1,24 +1,44 @@
 <!-- dashboard.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"><!-- Replace with the actual path to your CSS file -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <!-- Replace with the actual path to your CSS file -->
 
     <title>Dashboard</title>
 </head>
+
 <body>
     <div>
         <button><a href="/logout">Logout</a></button>
     </div>
     <p>Hello, <%= uname %> !!</p>
-    <h1>Welcome to Dork</h1>
-    
+    <h1>Dork Dashboard</h1>
 
-    <!-- Other dashboard content goes here -->
+    <form action="/dashboard" method="post">
+        <label for="topic">Enter Topic:</label>
+        <input type="text" id="topic" name="topic" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } else { %>
+        <h2>Codeforces Problems</h2>
+        <ul>
+            <% problems.forEach(problem => { %>
+                <li>
+                    <strong><%= problem.name %></strong> - <%= problem.tags.join(', ') %>
+                </li>
+            <% }); %>
+        </ul>
+    <% } %>
 </body>
+
 </html>
