@@ -5,8 +5,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const { Pool } = require('pg');
-const axios = require('axios');
-
+const axios = require('axios')
 const app = express();
 const port = 3000;
 
@@ -86,8 +85,11 @@ app.post('/login', async (req, res) => {
         if (result.rows.length > 0) {
             const match = await bcrypt.compare(password, result.rows[0].password);
             if (match) {
+                // Store the username in the session
                 req.session.userId = result.rows[0].id;
-                res.redirect(`/dashboard?uname=${encodeURIComponent(username)}`);
+                req.session.username = result.rows[0].username;
+
+                res.redirect('/dashboard');
             } else {
                 res.render('login.ejs', { error: 'Invalid username or password' });
             }
@@ -100,21 +102,11 @@ app.post('/login', async (req, res) => {
     }
 });
 
+
 // Protected route
-app.get('/dashboard', requireAuth, async (req, res) => {
-    try {
-        const topic = req.query.uname; // Assuming you passed uname as a query parameter
-        const response = await axios.get(`https://codeforces.com/api/problemset.problems?tags=${topic}`);
-        const problems = response.data.result.problems;
-        res.render('dashboard.ejs', { uname: topic, problems, title: 'Dashboard' });
-    } catch (error) {
-        console.error('Failed to make request:', error.message);
-        res.render('dashboard.ejs', {
-            error: 'Failed to fetch data from the API.',
-            title: 'Dashboard',
-        });
-    }
-});
+// Assuming you have something like this in your server code
+
+
 
 // Handle logout
 app.get('/logout', (req, res) => {
@@ -124,6 +116,31 @@ app.get('/logout', (req, res) => {
         }
         res.redirect('/login');
     });
+});
+// Assuming you have something like this in your server code
+app.get('/dashboard', async (req, res) => {
+    try {
+        const loggedInUser = req.session.username;
+        console.log(loggedInUser);
+        const tags = req.query.tags || '';
+        const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
+        const response = await axios.get(apiUrl);
+        const problems = response.data.result.problems.slice(0, 100);
+
+        console.log(problems);
+
+        // Pass both problems and error to the template
+        res.render('dashboard', { uname: loggedInUser, problems, error: null });
+    } catch (error) {
+        console.error(error);
+        // If there's an error, pass the error variable to the template
+        res.render('dashboard', { uname: loggedInUser, problems: null, error: 'Error fetching problems' });
+    }
+});
+
+app.post('/dashboard', (req, res) => {
+    // Handle form submission if needed
+    res.redirect('/dashboard'); // Redirect to refresh the page with the updated data
 });
 
 app.listen(port, () => {

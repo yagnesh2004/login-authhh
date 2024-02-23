@@ -1,17 +1,9 @@
-<!-- dashboard.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <!-- Replace with the actual path to your CSS file -->
-
-    <title>Dashboard</title>
+    <!-- Your head content here -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body>
@@ -19,26 +11,42 @@
         <button><a href="/logout">Logout</a></button>
     </div>
     <p>Hello, <%= uname %> !!</p>
-    <h1>Dork Dashboard</h1>
 
-    <form action="/dashboard" method="post">
-        <label for="topic">Enter Topic:</label>
-        <input type="text" id="topic" name="topic" required>
+    <form action="/dashboard" method="get">
+        <label for="tags">Enter Tags:</label>
+        <input type="text" id="tags" name="tags" required>
         <button type="submit">Submit</button>
     </form>
 
-    <% if (error) { %>
+    <% if (typeof error !== 'undefined' && error !== null) { %>
         <p><%= error %></p>
-    <% } else { %>
+    <% } else if (problems) { %>
         <h2>Codeforces Problems</h2>
-        <ul>
-            <% problems.forEach(problem => { %>
-                <li>
-                    <strong><%= problem.name %></strong> - <%= problem.tags.join(', ') %>
-                </li>
-            <% }); %>
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Problem Name</th>
+                    <th>Contest ID</th>
+                    <th>Problem Index</th>
+                    <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+               <!-- Inside the table body -->
+<% problems.sort((a, b) => a.rating - b.rating).forEach(problem => { %>
+    <tr>
+        <td><a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank"><%= problem.name %></a></td>
+        <td><%= problem.contestId %></td>
+        <td><%= problem.index %></td>
+        <td><%= problem.tags.join(', ') %></td>
+        <td><%= problem.rating %></td>
+    </tr>
+<% }); %>
+
+            </tbody>
+        </table>
     <% } %>
+    
 </body>
 
 </html>
