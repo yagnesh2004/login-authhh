@@ -125,9 +125,8 @@ app.get('/dashboard', async (req, res) => {
         const tags = req.query.tags || '';
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
         const response = await axios.get(apiUrl);
-        const problems = response.data.result.problems.slice(0, 100);
+        const problems = response.data.result.problems.slice(0, 50);
 
-        console.log(problems);
 
         // Pass both problems and error to the template
         res.render('dashboard', { uname: loggedInUser, problems, error: null });

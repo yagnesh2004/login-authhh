@@ -3,7 +3,7 @@
 
 <head>
     <!-- Your head content here -->
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 
     <form action="/dashboard" method="get">
         <label for="tags">Enter Tags:</label>
-        <input type="text" id="tags" name="tags" required>
+        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" required>
         <button type="submit">Submit</button>
     </form>
 
@@ -26,22 +26,22 @@
             <thead>
                 <tr>
                     <th>Problem Name</th>
-                    <th>Contest ID</th>
-                    <th>Problem Index</th>
                     <th>Tags</th>
+                    <th>rating</th>
                 </tr>
             </thead>
             <tbody>
                <!-- Inside the table body -->
-<% problems.sort((a, b) => a.rating - b.rating).forEach(problem => { %>
+<!-- Inside the table body -->
+<% problems.sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity)).forEach(problem => { %>
     <tr>
         <td><a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank"><%= problem.name %></a></td>
-        <td><%= problem.contestId %></td>
-        <td><%= problem.index %></td>
         <td><%= problem.tags.join(', ') %></td>
-        <td><%= problem.rating %></td>
+        <td><%= problem.rating !== null ? problem.rating : '-' %></td>
     </tr>
 <% }); %>
+
+
 
             </tbody>
         </table>
