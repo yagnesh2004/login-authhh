@@ -128,38 +128,24 @@ app.get('/logout', (req, res) => {
     });
 });
 // Assuming you have something like this in your server code
-// Assuming you have a function to fetch the last name from the database
-async function getUserLastName(username) {
-    // Replace this with your actual database query
-    const result = await pool.query('SELECT last_name FROM userss WHERE username = $1', [username]);
-
-    if (result.rows.length > 0) {
-        return result.rows[0].last_name;
-    } else {
-        return null;
-    }
-}
-
 app.get('/dashboard', async (req, res) => {
     try {
-        const loggedInUser = req.session.uname; // Assuming 'uname' is the username
-        const userLastName = await getUserLastName(loggedInUser);
-
+        const loggedInUser = req.session.username;
+        console.log(loggedInUser);
         const tags = req.query.tags || '';
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
         const response = await axios.get(apiUrl);
         const problems = response.data.result.problems.slice(0, 50);
 
-        // Pass both problems and error to the template
 
-        res.render('dashboard', { uname: loggedInUser, lname: userLastName, problems, error: null });
+        // Pass both problems and error to the template
+        res.render('dashboard', { uname: loggedInUser, problems, error: null });
     } catch (error) {
         console.error(error);
         // If there's an error, pass the error variable to the template
         res.render('dashboard', { uname: loggedInUser, problems: null, error: 'Error fetching problems' });
     }
 });
-
 
 app.post('/dashboard', (req, res) => {
     // Handle form submission if needed
