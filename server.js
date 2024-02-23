@@ -37,38 +37,48 @@ app.get('/', (req, res) => {
 });
 
 // Render the signup form
+// GET route for displaying the signup form
 app.get('/signup', (req, res) => {
     res.render('signup.ejs');
 });
 
-// Handle signup form submission
+// POST route for handling signup form submission
+// POST route for handling signup form submission
 app.post('/signup', async (req, res) => {
     try {
         // Data Validation
-        const { username, password } = req.body;
+        const { username, password, email, firstname, lastname } = req.body;
 
-        if (!username || !password) {
-            return res.status(400).send('Username and password are required');
+        if (!username || !password || !email || !firstname || !lastname) {
+            return res.render('signup.ejs', { error: 'All fields are required', username, email, firstname, lastname });
         }
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Check if username is unique
+        const existingUsername = await pool.query('SELECT * FROM userss WHERE username = $1', [username]);
+        if (existingUsername.rows.length > 0) {
+            return res.render('signup.ejs', { error: 'Username already exists', username, email, firstname, lastname });
+        }
+
+        // Check if email is unique
+        const existingEmail = await pool.query('SELECT * FROM userss WHERE email = $1', [email]);
+        if (existingEmail.rows.length > 0) {
+            return res.render('signup.ejs', { error: 'Email already exists', username, email, firstname, lastname });
+        }
+
         // Database Insertion
-        const result = await pool.query('INSERT INTO userss (username, password) VALUES ($1, $2) RETURNING *', [username, hashedPassword]);
+        const result = await pool.query('INSERT INTO userss (username, password, email, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING *', [username, hashedPassword, email, firstname, lastname]);
 
         // Redirect on Success
         res.redirect('/login');
     } catch (error) {
         console.error(error);
-
-        if (error.code === '23502' && error.column === 'username') {
-            return res.status(400).send('Username cannot be null');
-        }
-
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 // Render the login form
 app.get('/login', (req, res) => {
@@ -118,24 +128,38 @@ app.get('/logout', (req, res) => {
     });
 });
 // Assuming you have something like this in your server code
+// Assuming you have a function to fetch the last name from the database
+async function getUserLastName(username) {
+    // Replace this with your actual database query
+    const result = await pool.query('SELECT last_name FROM userss WHERE username = $1', [username]);
+
+    if (result.rows.length > 0) {
+        return result.rows[0].last_name;
+    } else {
+        return null;
+    }
+}
+
 app.get('/dashboard', async (req, res) => {
     try {
-        const loggedInUser = req.session.username;
-        console.log(loggedInUser);
+        const loggedInUser = req.session.uname; // Assuming 'uname' is the username
+        const userLastName = await getUserLastName(loggedInUser);
+
         const tags = req.query.tags || '';
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
         const response = await axios.get(apiUrl);
         const problems = response.data.result.problems.slice(0, 50);
 
-
         // Pass both problems and error to the template
-        res.render('dashboard', { uname: loggedInUser, problems, error: null });
+
+        res.render('dashboard', { uname: loggedInUser, lname: userLastName, problems, error: null });
     } catch (error) {
         console.error(error);
         // If there's an error, pass the error variable to the template
         res.render('dashboard', { uname: loggedInUser, problems: null, error: 'Error fetching problems' });
     }
 });
+
 
 app.post('/dashboard', (req, res) => {
     // Handle form submission if needed
