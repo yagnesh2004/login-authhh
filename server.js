@@ -135,7 +135,7 @@ app.get('/dashboard', async (req, res) => {
         const tags = req.query.tags || '';
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
         const response = await axios.get(apiUrl);
-        const problems = response.data.result.problems.slice(0, 50);
+        const problems = response.data.result.problems.slice(0, 30);
 
 
         // Pass both problems and error to the template
@@ -154,4 +154,24 @@ app.post('/dashboard', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
+});
+app.get('/analyzer', (req, res) => {
+    res.redirect('/analyzer');
+});
+
+// POST request for the "/analyzer" endpoint
+app.post('/analyzer', async (req, res) => {
+    try {
+        const loggedInUser = req.session.username;
+        const codeforcesHandle = req.body.codeforcesHandle; // Assuming the input field has the name "codeforcesHandle"
+        
+        const apiUrl = `https://codeforces.com/api/user.info?handles=${codeforcesHandle}&checkHistoricHandles=false`;
+        const response = await axios.get(apiUrl);
+        const user = response.data.result[0];
+
+        res.render('analyzer', { uname: loggedInUser, user, error: null });
+    } catch (error) {
+        console.error(error);
+        res.render('analyzer', { uname: loggedInUser, user: null, error: 'Error fetching user details' });
+    }
 });

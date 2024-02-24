@@ -7,16 +7,28 @@
 </head>
 
 <body>
-    <div>
+    <div class="navi">
         <button><a href="/logout">Logout</a></button>
+        <button><a href="/analyzer">analyse</a></button>
+
     </div>
     <p>Hello, <%= uname %> !!</p>
 
     <form action="/dashboard" method="get">
+        
         <label for="tags">Enter Tags:</label>
         <input type="text" id="tags" placeholder="Enter problem tag" name="tags" required>
         <button type="submit">Submit</button>
     </form>
+    <div class="user_handle">
+        <h3><%=  %></h3>
+        <h3><%=  %></h3>
+        <h3><%=  %></h3>
+        <h3><%= %></h3>
+
+
+
+    </div>
 
     <% if (typeof error !== 'undefined' && error !== null) { %>
         <p><%= error %></p>
@@ -28,6 +40,7 @@
                     <th>Problem Name</th>
                     <th>Tags</th>
                     <th>rating</th>
+                    <th>status</th>
                 </tr>
             </thead>
             <tbody>

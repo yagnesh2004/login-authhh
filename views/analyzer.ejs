@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Your head content here -->
+    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+</head>
+
+<body>
+    <div class="navi">
+        <button><a href="/logout">Logout</a></button>
+    </div>
+    
+    <!-- Include the form with the input box -->
+    <form action="/analyzer" method="post">
+        <label for="codeforcesHandle">Enter Codeforces Handle:</label>
+        <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    <% if (user && user.firstName) { %>
+        <p>Hello, <%= user.firstName %> !!</p>
+
+        <!-- Include other details in a table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Last Name</td>
+                    <td><%= user.lastName %></td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td><%= user.country %></td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td><%= user.city %></td>
+                </tr>
+                <tr>
+                    <td>Rating</td>
+                    <td><%= user.rating %></td>
+                </tr>
+                <!-- Add more attributes as needed -->
+
+                <!-- Display images -->
+                <tr>
+                    <td>Profile Photo</td>
+                    <td><img src="<%= user.avatar %>" alt="Profile Photo"></td>
+                </tr>
+                <tr>
+                    <td>Title Photo</td>
+                    <td><img src="<%= user.titlePhoto %>" alt="Title Photo"></td>
+                </tr>
+            </tbody>
+        </table>
+
+    <% } else { %>
+        <p>Hello, <%= uname %> !!</p>
+        <p>Error fetching user details. Please try again.</p>
+    <% } %>
+</body>
+
+</html>
