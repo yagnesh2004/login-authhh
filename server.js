@@ -116,10 +116,16 @@ app.post('/login', async (req, res) => {
 // Protected route
 // Assuming you have something like this in your server code
 
-
+app.get('/home', (req, res) => {
+  
+    res.redirect('/');
+    
+});
 
 // Handle logout
 app.get('/logout', (req, res) => {
+    const loggedInUser = req.session.username;
+    console.log(loggedInUser+ " Logged out");
     req.session.destroy((err) => {
         if (err) {
             console.error('Error destroying session:', err);
@@ -130,8 +136,10 @@ app.get('/logout', (req, res) => {
 // Assuming you have something like this in your server code
 app.get('/dashboard', async (req, res) => {
     try {
+        
         const loggedInUser = req.session.username;
-        console.log(loggedInUser);
+        console.log("New user logged");
+        console.log(loggedInUser + " Logged in");
         const tags = req.query.tags || '';
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
         const response = await axios.get(apiUrl);
@@ -158,6 +166,7 @@ app.listen(port, () => {
 app.get('/analyzer', (req, res) => {
     res.redirect('/analyzer');
 });
+
 
 // POST request for the "/analyzer" endpoint
 app.post('/analyzer', async (req, res) => {

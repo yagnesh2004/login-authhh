@@ -15,10 +15,15 @@
 </head>
 
 <body>
-    <div class="signup-header">
-        <h1>Login In here</h1>
+    <div class="navi">
+        <button><a href="/" style="color: white;">Home</a></button>
+
     </div>
-    <form action="/login" method="post">
+    
+    <form class="login" action="/login" method="post">
+        <div class="signup-header">
+            <h1>Login In here</h1>
+        </div>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Enter your username"required>
         <label for="password">Password:</label>
