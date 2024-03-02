@@ -115,6 +115,33 @@ app.post('/login', async (req, res) => {
 
 // Protected route
 // Assuming you have something like this in your server code
+app.get('/analyzer', (req, res) => {
+    res.render('analyzer');
+});
+
+// POST request for the "/analyzer" endpoint
+// POST request for the "/analyzer" endpoint
+app.post('/analyzer', async (req, res) => {
+    try {
+        const loggedInUser = req.session.username;
+        const codeforcesHandle = req.body.codeforcesHandle;
+        console.log(codeforcesHandle);
+        console.log(loggedInUser);
+
+        const apiUrl = `https://codeforces.com/api/user.info?handles=${codeforcesHandle}&checkHistoricHandles=false`;
+        const response = await axios.get(apiUrl);
+        const user = response.data.result[0];
+        console.log(user);
+
+        res.render('analyzer', { uname: loggedInUser, user, error: null });
+    } catch (error) {
+        console.log("Error fetching user details:", error);
+        const loggedInUser = req.session.username;
+        res.render('analyzer', { uname: loggedInUser, user: null, error: 'Error fetching user details' });
+    }
+});
+
+
 
 app.get('/home', (req, res) => {
   
@@ -154,33 +181,7 @@ app.get('/dashboard', async (req, res) => {
         res.render('dashboard', { uname: loggedInUser, problems: null, error: 'Error fetching problems' });
     }
 });
-
-app.post('/dashboard', (req, res) => {
-    // Handle form submission if needed
-    res.redirect('/dashboard'); // Redirect to refresh the page with the updated data
-});
-
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-app.get('/analyzer', (req, res) => {
-    res.redirect('/analyzer');
-});
-
-
-// POST request for the "/analyzer" endpoint
-app.post('/analyzer', async (req, res) => {
-    try {
-        const loggedInUser = req.session.username;
-        const codeforcesHandle = req.body.codeforcesHandle; // Assuming the input field has the name "codeforcesHandle"
-        
-        const apiUrl = `https://codeforces.com/api/user.info?handles=${codeforcesHandle}&checkHistoricHandles=false`;
-        const response = await axios.get(apiUrl);
-        const user = response.data.result[0];
-
-        res.render('analyzer', { uname: loggedInUser, user, error: null });
-    } catch (error) {
-        console.error(error);
-        res.render('analyzer', { uname: loggedInUser, user: null, error: 'Error fetching user details' });
-    }
-});
+// GET request for the "/analyzer" endpoint

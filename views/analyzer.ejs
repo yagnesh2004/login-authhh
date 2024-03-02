@@ -9,6 +9,7 @@
 <body>
     <div class="navi">
         <button><a href="/logout">Logout</a></button>
+        <button><a href="/dashboard">Dashboard</a></button>
     </div>
     
     <!-- Include the form with the input box -->
@@ -18,52 +19,92 @@
         <button type="submit">Analyze</button>
     </form>
 
-    <% if (user && user.firstName) { %>
-        <p>Hello, <%= user.firstName %> !!</p>
+    <div class="user-details"> <!-- Opening div here -->
+        <% 
+            // Helper function to calculate the time difference
+            function calculateTimeDifference(timeSeconds) {
+                const currentTime = Math.floor(Date.now() / 1000);
+                const differenceInSeconds = currentTime - timeSeconds;
 
-        <!-- Include other details in a table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Attribute</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Last Name</td>
-                    <td><%= user.lastName %></td>
-                </tr>
-                <tr>
-                    <td>Country</td>
-                    <td><%= user.country %></td>
-                </tr>
-                <tr>
-                    <td>City</td>
-                    <td><%= user.city %></td>
-                </tr>
-                <tr>
-                    <td>Rating</td>
-                    <td><%= user.rating %></td>
-                </tr>
-                <!-- Add more attributes as needed -->
+                const years = Math.floor(differenceInSeconds / (365 * 24 * 60 * 60));
+                const months = Math.floor((differenceInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
+                const days = Math.floor((differenceInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+                const hours = Math.floor((differenceInSeconds % (24 * 60 * 60)) / (60 * 60));
 
-                <!-- Display images -->
-                <tr>
-                    <td>Profile Photo</td>
-                    <td><img src="<%= user.avatar %>" alt="Profile Photo"></td>
-                </tr>
-                <tr>
-                    <td>Title Photo</td>
-                    <td><img src="<%= user.titlePhoto %>" alt="Title Photo"></td>
-                </tr>
-            </tbody>
-        </table>
+                let result = '';
 
-    <% } else { %>
-        <p>Hello, <%= uname %> !!</p>
-        <p>Error fetching user details. Please try again.</p>
-    <% } %>
+                if (years > 0) {
+                    result += `${years} years `;
+                }
+
+                if (months > 0) {
+                    result += `${months} months `;
+                }
+
+                if (days > 0) {
+                    result += `${days} days `;
+                }
+
+                if (hours > 0) {
+                    result += `${hours} hours`;
+                }
+
+                return result.trim() || 'Less than an hour ago';
+            }
+
+            try { 
+        %>
+            <% if (locals.user) { %>
+                <h2>User Details</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Image</td>
+                            <td><img src="<%= locals.user.avatar %>" alt="Avatar" style="max-width: 100%;"></td>
+                        </tr>
+                        <tr>
+                            <td>Codeforces Handle:</td>
+                            <td><%= locals.user.handle %></td>
+                        </tr>
+                        <tr>
+                            <td>Rating:</td>
+                            <td><%= locals.user.rating %> (Max: <%= locals.user.maxRating %>)</td>
+                        </tr>
+                        <tr>
+                            <td>Rank:</td>
+                            <td><%= locals.user.rank %> (Max: <%= locals.user.maxRank %>)</td>
+                        </tr>
+                        <tr>
+                            <td>Name:</td>
+                            <td><%= locals.user.firstName %> <%= locals.user.lastName %></td>
+                        </tr>
+                        <tr>
+                            <td>City & Country</td>
+                            <td><%= locals.user.country %>, <%= locals.user.city %></td>
+                        </tr>
+                        <tr>
+                            <td>Registration Time:</td>
+                            <td><%= calculateTimeDifference(locals.user.registrationTimeSeconds) %></td>
+                        </tr>
+                        <tr>
+                            <td>Last Online Time:</td>
+                            <td><%= calculateTimeDifference(locals.user.lastOnlineTimeSeconds) %></td>
+                        </tr>
+                        <tr>
+                            <td>Organization:</td>
+                            <td><%= locals.user.organization %></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            <% } else { %>
+                <p>No data available. Enter a Codeforces handle above to get details.</p>
+            <% } %>
+        <% } catch (error) { %>
+            <p>Error fetching user details. Please try again.</p>
+        <% } %>
+    </div> 
+
 </body>
 
 </html>
