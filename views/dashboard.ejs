@@ -3,15 +3,20 @@
 
 <head>
     <!-- Your head content here -->
+    <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 
 <body>
     <div class="navi">
         <nav>
-            <a href="/logout">Logout</a>
+            <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
             <a href="/dashboard">Dashboard</a>
             <a href="/analyzer">Analyze</a>
+            <a href="/learn">Learn</a>
+
+
+            <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
             
         </nav>
 
@@ -27,63 +32,73 @@
     <form action="/dashboard" method="get">
         
         <label for="tags">Enter Tags:</label>
-
+        <input type="text" id="handle" placeholder="Enter CF" name="handle" required>
         <input type="text" id="tags" placeholder="Enter problem tag" name="tags" required>
         <button type="submit">Submit</button>
     </form>
     <nav class="rating">
-        <button type="button" value="800">800</button>
-        <button type="button" value="900">900</button>
-        <button type="button" value="1000">1000</button>
-        <button type="button" value="1100">1100</button>
-        <button type="button" value="1200">1200</button>
-        <button type="button" value="1300">1300</button>
-        <button type="button" value="1400">1400</button>
-        <button type="button" value="1500">1500</button>
-        <button type="button" value="1600">1600</button>
-        
-    </nav>
-    <div class="user_handle">
+        <button type="button" class="rating-button" value="800">800</button>
+        <button type="button" class="rating-button" value="900">900</button>
+        <button type="button" class="rating-button" value="1000">1000</button>
+        <button type="button" class="rating-button" value="1100">1100</button>
+        <button type="button" class="rating-button" value="1200">1200</button>
+        <button type="button" class="rating-button" value="1300">1300</button>
+        <button type="button" class="rating-button" value="1400">1400</button>
+        <button type="button" class="rating-button" value="1500">1500</button>
+        <button type="button" class="rating-button" value="1600">1600</button>
 
-        <h3><%=  %></h3>
-        <h3><%=  %></h3>
-        <h3><%=  %></h3>
-        <h3><%= %></h3>
+        <script>
+            $(document).ready(function () {
+                $('.rating-button').click(function () {
+                    const ratingValue = $(this).val();
+                    console.log('Button clicked with value:', ratingValue);
 
-
-
-    </div>
+                    $.get(`/dashboard?rating=${ratingValue}`, function (data) {
+                        console.log('Server response:', data);
+                    });
+                });
+            });
+        </script>
+    </nav>  
 
     <% if (typeof error !== 'undefined' && error !== null) { %>
         <p><%= error %></p>
-    <% } else if (problems) { %>
-        <h2>Codeforces Problems</h2>
+    <% } else if (problems && problems.length > 0) { %>
         <table>
             <thead>
                 <tr>
                     <th>Problem Name</th>
                     <th>Tags</th>
-                    <th>rating</th>
-                    <th>status</th>
+                    <th>Rating</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-               <!-- Inside the table body -->
-<!-- Inside the table body -->
-<% problems.sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity)).forEach(problem => { %>
-    <tr>
-        <td><a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank"><%= problem.name %></a></td>
-        <td><%= problem.tags.join(', ') %></td>
-        <td><%= problem.rating !== null ? problem.rating : '-' %></td>
-    </tr>
-<% }); %>
-
-
-
+                <% problems
+                    .filter(problem => problem.rating !== undefined && problem.rating !== null)
+                    .sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity))
+                    .slice(0, 200) // Display only the first 30 problems
+                    .forEach(problem => { %>
+                    <tr>
+                        <td><a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank" style="text-decoration: none; color: inherit;"><%= problem.name %></a></td>
+                        <td><%= problem.tags.join(', ') %></td>
+                        <td><%= problem.rating != null ? problem.rating : '-' %></td>
+                    </tr>
+                <% }); %>
             </tbody>
+            
+            
         </table>
+    <% } else { %>
+        <div class="default-data">
+            <i class="fa-brands fa-codepen"></i>            
+            <p>No data available / Error fetching problems </p>
+            <p>Enter a valid topic</p>
+
+            
+        </div>
     <% } %>
     
-</body>
-
-</html>
+    </body>
+    </html>
+    

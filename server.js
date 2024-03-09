@@ -161,35 +161,32 @@ app.get('/logout', (req, res) => {
     });
 });
 // Assuming you have something like this in your server code
+
+
 app.get('/dashboard', async (req, res) => {
     try {
         const loggedInUser = req.session.username;
-        console.log("New user logged");
         console.log(loggedInUser + " Logged in");
-
-        // Get the tags and rating values from the query parameters
+        const handle = req.query.handle || '';
         const tags = req.query.tags || '';
         const rating = req.query.rating || '';
-        console.log(tags)
-        console.log(rating);
-
-        // Store the rating value in a variable named 'rating'
         const storedRating = rating;
-
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}&rating=${rating}`;
         const response = await axios.get(apiUrl);
-        const problems = response.data.result.problems.slice(0, 30);
+        const problems = response.data.result.problems;
 
-        // Pass both problems, storedRating, and error to the template
         res.render('dashboard', { uname: loggedInUser, problems, error: null });
     } catch (error) {
         console.error(error);
-        // If there's an error, pass the error variable to the template
-        res.render('dashboard', { uname: loggedInUser, problems: null, storedRating: null, error: 'Error fetching problems' });
+
+        if (error.response && error.response.status === 400) {
+            res.render('dashboard', { uname: loggedInUser, problems: null, storedRating: null, error: 'User not found or invalid handle' });
+        } else {
+            res.render('dashboard', { uname: loggedInUser, problems: null, storedRating: null, error: 'Error fetching problems' });
+        }
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
-// GET request for the "/analyzer" endpoint

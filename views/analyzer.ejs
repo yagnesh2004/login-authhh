@@ -3,16 +3,21 @@
 
 <head>
     <!-- Your head content here -->
+    <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 
 <body>
     <nav>
-        <a href="/logout">Logout</a>
+        <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
         <a href="/dashboard">Dashboard</a>
         <a href="/analyzer">Analyze</a>
+        <a href="/learn">Learn</a>
+
+        <a href="">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
         
     </nav>
+    
     
     <!-- Include the form with the input box -->
     <form action="/analyzer" method="post">
@@ -100,10 +105,24 @@
                 </table>
                 
             <% } else { %>
-                <p>No data available. Enter a Codeforces handle above to get details.</p>
+                <div class="default-data">
+                    <i class="fa-solid fa-database"></i>
+                    <p>No data available / Error fetching user details </p>
+                    <p>Enter a valid Codeforces id</p>
+
+                    
+                </div>
+                
+                
             <% } %>
         <% } catch (error) { %>
-            <p>Error fetching user details. Please try again.</p>
+            <div class="default-data">
+                <i class="fa-solid fa-database"></i>
+                <p>Error fetching user details. Please try again.</p>
+
+            </div>
+            
+            
         <% } %>
     </div> 
 
