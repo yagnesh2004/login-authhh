@@ -2,14 +2,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 body {
-    background-color: white;
+    background-color: #191a1a;
     font-family: "Sora", sans-serif;
+    color: #747777;
 }
 
 h1 {
     font-size: 80px;
     text-align: center;
-    color: #333;
+    color: #e1e1df;
     margin-top: 2vh;
     transform: translateY(-50%);
 }
@@ -25,15 +26,17 @@ table {
 th, td {
     padding: 20px; /* Adjust padding as needed */
     text-align: center;
-    border: 0.1px solid #d3d3d3;
+    border: 0.1px solid #3d3d3b;
 }
 th{
-    background-color: #f1f1f1;
+    background-color: #333333;
+    color:#e1e1df ;
 }
 h2{
-    font-weight: 500;
+    font-weight: 400;
     font-size: 35px;
     text-align: center;
+    color: #e1e1df;
 }
 
 input {
@@ -51,8 +54,9 @@ div.logout-container {
     right: 10px;
 }
 p{
-    font-weight: 500;
-    font-size: 30px;
+    color: #e1e1df;
+    font-weight: 400;
+    font-size: 33px;
     text-align: center;
 }
 
@@ -64,7 +68,7 @@ form {
     margin-right: 20px;
     max-width: 80%;
     padding: 20px 230px;
-    background-color: #fff;
+    background-color: #202222;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center; /* Center the form content */
@@ -81,6 +85,7 @@ form label {
 }
 
 form input {
+    color: #747777;
     margin-right: 20px;
     margin-left: 20px;
     width: 35%;
@@ -90,15 +95,22 @@ form input {
     box-sizing: border-box; /* Adjust the margin as needed */
     height: 40px;
     align-items: center;
+    background-color: #202222;
+    border: 2px solid #3d3d3b;
+
 }
 
 form button {
     margin-right: 50px;
     margin-left: 20px;
+    font-family: "Sora", sans-serif;
+    font-weight: 300;
+
     width: 16%;
     padding: 8px;
-    background-color: #0d0c22; /* Violet color */
-    color: #fff;
+    font-size: 20px;
+    background-color: #1fb8cd; /* Violet color */
+    color: #1a2e31;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -107,10 +119,73 @@ form button {
     margin-top: 5px;
     
 }
+form button:hover{
+    border: 2px solid #e3e3e3;
+    background-color:#22c1d9 ;
+
+}
 .user-details {
     font-family: "Sora", sans-serif;
     font-weight: 400px;
     font-size: 25px;
 
 
+}
+.rating {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+    padding: 10px;
+    background-color: #191a1a;
+}
+
+.rating button {
+    background-color: #333333;
+    color: #e3e3e3;
+    width: 6%;
+    height: 40px;
+    border: 1px solid #3d3d3b;
+    padding: 15px 20px;
+    margin: 0 10px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 15px;
+
+}
+
+.rating button:hover {
+    transform: scale(1.1);
+    border:2px solid #1faabe;
+    color: #ffffff;
+    background-color:#414141 ;
+
+
+}
+
+.rating button:active {
+    border-color: #1faabe;
+}
+
+nav {
+    background-color: #202222;
+    overflow: hidden;
+    width: 100%;
+    padding: 13px;
+    color: #e1e1df;
+
+}
+
+nav a {
+    float:left;
+    display: block;
+    color:#e1e1df;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: #333333;
+    color: #ffffff;
 }

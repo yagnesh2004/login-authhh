@@ -8,8 +8,12 @@
 
 <body>
     <div class="navi">
-        <button><a href="/logout">Logout</a></button>
-        <button><a href="/analyzer">analyze</a></button>
+        <nav>
+            <a href="/logout">Logout</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/analyzer">Analyze</a>
+            
+        </nav>
 
 
 
@@ -27,6 +31,18 @@
         <input type="text" id="tags" placeholder="Enter problem tag" name="tags" required>
         <button type="submit">Submit</button>
     </form>
+    <nav class="rating">
+        <button type="button" value="800">800</button>
+        <button type="button" value="900">900</button>
+        <button type="button" value="1000">1000</button>
+        <button type="button" value="1100">1100</button>
+        <button type="button" value="1200">1200</button>
+        <button type="button" value="1300">1300</button>
+        <button type="button" value="1400">1400</button>
+        <button type="button" value="1500">1500</button>
+        <button type="button" value="1600">1600</button>
+        
+    </nav>
     <div class="user_handle">
 
         <h3><%=  %></h3>

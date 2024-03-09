@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"><!-- Replace with the actual path to your CSS file -->
-    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
@@ -27,7 +26,7 @@
         h1 {
             font-family: "Sora", sans-serif;
             color: #333;
-            font-weight: 100px;
+            font-weight: 400;
 
         }
 
@@ -63,12 +62,39 @@
         button.signup:hover {
             background-color: #3c5546; /* Darker green on hover */
         }
+        nav {
+            background-color: rgb(228, 228, 228);
+            overflow: hidden;
+        }
+
+        nav a {
+            float:left;
+            display: block;
+            color:#333;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
     </style>
 </head>
 
 <body>
-    <div id="loader" class="loader"></div>
+   
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#Practice">Practice</a>
+        <a href="#Fellowships">Fellowships</a>
+    </nav>
     <h1>Welcome to Dork</h1>
+    <h2>A platform for Computer Science geeks <br>to excell in programming</h2>
+ 
+ 
     
 
     <div style="text-align: center; margin-top: 20px;">
@@ -80,6 +106,13 @@
         </a>
 
     </div>
+    <div class="analysis-website">
+        <h2>7000+ problems</h2>
+        <h2>35+ topics</h2>
+        <h2>100+ users</h2>
+
+    </div>
+    
 </body>
 <!-- Add this to your HTML file -->
 <script>

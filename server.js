@@ -163,24 +163,32 @@ app.get('/logout', (req, res) => {
 // Assuming you have something like this in your server code
 app.get('/dashboard', async (req, res) => {
     try {
-        
         const loggedInUser = req.session.username;
         console.log("New user logged");
         console.log(loggedInUser + " Logged in");
+
+        // Get the tags and rating values from the query parameters
         const tags = req.query.tags || '';
-        const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}`;
+        const rating = req.query.rating || '';
+        console.log(tags)
+        console.log(rating);
+
+        // Store the rating value in a variable named 'rating'
+        const storedRating = rating;
+
+        const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}&rating=${rating}`;
         const response = await axios.get(apiUrl);
         const problems = response.data.result.problems.slice(0, 30);
 
-
-        // Pass both problems and error to the template
+        // Pass both problems, storedRating, and error to the template
         res.render('dashboard', { uname: loggedInUser, problems, error: null });
     } catch (error) {
         console.error(error);
         // If there's an error, pass the error variable to the template
-        res.render('dashboard', { uname: loggedInUser, problems: null, error: 'Error fetching problems' });
+        res.render('dashboard', { uname: loggedInUser, problems: null, storedRating: null, error: 'Error fetching problems' });
     }
 });
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
