@@ -163,30 +163,69 @@ app.get('/logout', (req, res) => {
 // Assuming you have something like this in your server code
 
 
+
 app.get('/dashboard', async (req, res) => {
+    let loggedInUser; // Declare loggedInUser outside the try-catch block
+
     try {
-        const loggedInUser = req.session.username;
+        loggedInUser = req.session.username;
         console.log(loggedInUser + " Logged in");
+
+        // Fetch accepted submissions for the user
         const handle = req.query.handle || '';
+        const userSubmissionUrl = `https://codeforces.com/api/user.status?handle=${handle}`;
+        const userSubmissionsResponse = await axios.get(userSubmissionUrl);
+      
+        
+      
+
+        if (userSubmissionsResponse.data.status !== 'OK') {
+            throw new Error('Failed to fetch user submissions');
+        }
+
+        // Filter only accepted submissions
+        const acceptedSubmissions = userSubmissionsResponse.data.result.filter(submission => submission.verdict === 'OK');
+        const uniqueAcceptedProblems = Array.from(new Set(acceptedSubmissions.map(submission => submission.problem.name)));
+
+        // Fetch problems based on tags and rating
         const tags = req.query.tags || '';
         const rating = req.query.rating || '';
-        const storedRating = rating;
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}&rating=${rating}`;
         const response = await axios.get(apiUrl);
         const problems = response.data.result.problems;
 
-        res.render('dashboard', { uname: loggedInUser, problems, error: null });
+        res.render('dashboard', {
+            uname: loggedInUser,
+            problems,
+            handle,
+            topic_name: tags,
+            error: null,
+            uniqueAcceptedProblems: uniqueAcceptedProblems // Add this line to pass the variable
+        });
+        
     } catch (error) {
         console.error(error);
 
         if (error.response && error.response.status === 400) {
-            res.render('dashboard', { uname: loggedInUser, problems: null, storedRating: null, error: 'User not found or invalid handle' });
+            res.render('dashboard', {
+                uname: loggedInUser,
+                problems: null,
+                handle,
+                storedRating: null,
+                error: 'User not found or invalid handle'
+            });
         } else {
-            res.render('dashboard', { uname: loggedInUser, problems: null, storedRating: null, error: 'Error fetching problems' });
+            res.render('dashboard', {
+                uname: loggedInUser,
+                problems: null,
+                handle,
+                storedRating: null,
+                error: 'Error fetching problems'
+            });
         }
     }
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });

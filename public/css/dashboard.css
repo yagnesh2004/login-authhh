@@ -164,7 +164,7 @@ form button:hover{
     transform: scale(1.1);
     border:2px solid #1faabe;
     color: #ffffff;
-    background-color:#414141 ;
+    background-color:#06c2de68 ;
 
 
 }
@@ -184,6 +184,7 @@ nav {
 
 nav a {
     float:left;
+    font-size: 13px;
     display: block;
     color:#e1e1df;
     text-align: center;
@@ -210,4 +211,14 @@ nav a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.topic_name p{
+    font-size: 22px;
+}
+.topic_name .topic_name_right {
+    color: #00af00;
+}
+
+.topic_name .topic_name_error {
+    color: rgb(202, 0, 0);
 }

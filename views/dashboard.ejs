@@ -11,31 +11,20 @@
     <div class="navi">
         <nav>
             <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
-            <a href="/dashboard">Dashboard</a>
+            <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
             <a href="/analyzer">Analyze</a>
             <a href="/learn">Learn</a>
-
-
             <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
-            
         </nav>
-
-
-
     </div>
-   
-    
-    <p>Hello, <%= uname %> !!</p>
-
-
 
     <form action="/dashboard" method="get">
-        
         <label for="tags">Enter Tags:</label>
         <input type="text" id="handle" placeholder="Enter CF" name="handle" required>
         <input type="text" id="tags" placeholder="Enter problem tag" name="tags" required>
-        <button type="submit">Submit</button>
+        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
+
     <nav class="rating">
         <button type="button" class="rating-button" value="800">800</button>
         <button type="button" class="rating-button" value="900">900</button>
@@ -46,20 +35,15 @@
         <button type="button" class="rating-button" value="1400">1400</button>
         <button type="button" class="rating-button" value="1500">1500</button>
         <button type="button" class="rating-button" value="1600">1600</button>
+    </nav>
 
-        <script>
-            $(document).ready(function () {
-                $('.rating-button').click(function () {
-                    const ratingValue = $(this).val();
-                    console.log('Button clicked with value:', ratingValue);
-
-                    $.get(`/dashboard?rating=${ratingValue}`, function (data) {
-                        console.log('Server response:', data);
-                    });
-                });
-            });
-        </script>
-    </nav>  
+    <div class="topic_name">
+        <% if (problems && problems.length === 0) { %>
+            <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
+        <% } else { %>
+            <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
+        <% } %>
+    </div>
 
     <% if (typeof error !== 'undefined' && error !== null) { %>
         <p><%= error %></p>
@@ -75,30 +59,34 @@
             </thead>
             <tbody>
                 <% problems
-                    .filter(problem => problem.rating !== undefined && problem.rating !== null)
-                    .sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity))
-                    .slice(0, 200) // Display only the first 30 problems
-                    .forEach(problem => { %>
-                    <tr>
-                        <td><a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank" style="text-decoration: none; color: inherit;"><%= problem.name %></a></td>
-                        <td><%= problem.tags.join(', ') %></td>
-                        <td><%= problem.rating != null ? problem.rating : '-' %></td>
-                    </tr>
-                <% }); %>
+                .filter(problem => problem.rating !== undefined && problem.rating !== null)
+                .sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity))
+                .slice(0, 200) // Display only the first 30 problems
+                .forEach(problem => { %>
+                <tr>
+                    <td>
+                        <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank" style="text-decoration: none; color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'green' : 'inherit' %>;">
+                            <%= problem.name %>
+                        </a>
+                    </td>
+                    <td><%= problem.tags.join(', ') %></td>
+                    <td><%= problem.rating != null ? problem.rating : '-' %></td>
+                    <td class="Status_bar" style="color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'green' : 'inherit' %>;">
+                        <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'ACT' : '-' %>
+                    </td>
+                </tr>
+            <% }); %>
+            
             </tbody>
-            
-            
         </table>
     <% } else { %>
         <div class="default-data">
-            <i class="fa-brands fa-codepen"></i>            
+            <i class="fa-brands fa-codepen"></i>
             <p>No data available / Error fetching problems </p>
             <p>Enter a valid topic</p>
-
-            
         </div>
     <% } %>
-    
-    </body>
-    </html>
-    
+
+</body>
+
+</html>
