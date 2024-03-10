@@ -166,18 +166,16 @@ app.get('/logout', (req, res) => {
 
 app.get('/dashboard', async (req, res) => {
     let loggedInUser; // Declare loggedInUser outside the try-catch block
+    let handle; // Declare handle variable
 
     try {
         loggedInUser = req.session.username;
         console.log(loggedInUser + " Logged in");
 
         // Fetch accepted submissions for the user
-        const handle = req.query.handle || '';
+        handle = req.query.handle || '';
         const userSubmissionUrl = `https://codeforces.com/api/user.status?handle=${handle}`;
         const userSubmissionsResponse = await axios.get(userSubmissionUrl);
-      
-        
-      
 
         if (userSubmissionsResponse.data.status !== 'OK') {
             throw new Error('Failed to fetch user submissions');
@@ -197,12 +195,12 @@ app.get('/dashboard', async (req, res) => {
         res.render('dashboard', {
             uname: loggedInUser,
             problems,
-            handle,
+            handle, // Pass handle to the template
             topic_name: tags,
             error: null,
-            uniqueAcceptedProblems: uniqueAcceptedProblems // Add this line to pass the variable
+            uniqueAcceptedProblems: uniqueAcceptedProblems
         });
-        
+
     } catch (error) {
         console.error(error);
 
@@ -210,21 +208,23 @@ app.get('/dashboard', async (req, res) => {
             res.render('dashboard', {
                 uname: loggedInUser,
                 problems: null,
-                handle,
+                handle, // Pass handle to the template
                 storedRating: null,
-                error: 'User not found or invalid handle'
+                error: 'Dork want some data'
             });
         } else {
             res.render('dashboard', {
                 uname: loggedInUser,
                 problems: null,
-                handle,
+                handle, // Pass handle to the template
                 storedRating: null,
                 error: 'Error fetching problems'
             });
         }
     }
 });
+
+
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

@@ -20,8 +20,8 @@
 
     <form action="/dashboard" method="get">
         <label for="tags">Enter Tags:</label>
-        <input type="text" id="handle" placeholder="Enter CF" name="handle" required>
-        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" required>
+        <input type="text" id="handle" placeholder="Enter CF" name="handle" value="<%= locals.handle || '' %>" required>
+        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" value="<%= locals.tags || '' %>" required>
         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
@@ -37,17 +37,22 @@
         <button type="button" class="rating-button" value="1600">1600</button>
     </nav>
 
-    <div class="topic_name">
-        <% if (problems && problems.length === 0) { %>
-            <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
-        <% } else { %>
-            <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
-        <% } %>
-    </div>
-
     <% if (typeof error !== 'undefined' && error !== null) { %>
-        <p><%= error %></p>
+        <div class="default-data">
+            <i class="fa-brands fa-codepen"></i>
+            <p>" <%= error %> "</p>
+            <p>Enter a your valid credentials</p>
+
+        </div>
+
     <% } else if (problems && problems.length > 0) { %>
+        <div class="topic_name">
+            <% if (problems && problems.length === 0) { %>
+                <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
+            <% } else { %>
+                <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
+            <% } %>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -80,6 +85,11 @@
             </tbody>
         </table>
     <% } else { %>
+        <div class="topic_name">
+            <% if (problems && problems.length === 0) { %>
+                <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
+            <% } %>
+        </div>
         <div class="default-data">
             <i class="fa-brands fa-codepen"></i>
             <p>No data available / Error fetching problems </p>
