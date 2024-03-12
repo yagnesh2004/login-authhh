@@ -91,3 +91,17 @@ button.signup:hover {
     font-style: normal;
 }
 
+#features {
+    margin: 100px;
+  }
+  
+  #features .container .row {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  
+  #features .container .row .col {
+    flex: 0 0 auto;
+    width: 33.333333%;
+  }
+  

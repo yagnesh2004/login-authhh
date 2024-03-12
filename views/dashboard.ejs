@@ -26,15 +26,16 @@
     </form>
 
     <nav class="rating">
-        <button type="button" class="rating-button" value="800">800</button>
-        <button type="button" class="rating-button" value="900">900</button>
-        <button type="button" class="rating-button" value="1000">1000</button>
-        <button type="button" class="rating-button" value="1100">1100</button>
-        <button type="button" class="rating-button" value="1200">1200</button>
-        <button type="button" class="rating-button" value="1300">1300</button>
-        <button type="button" class="rating-button" value="1400">1400</button>
-        <button type="button" class="rating-button" value="1500">1500</button>
-        <button type="button" class="rating-button" value="1600">1600</button>
+        <!-- Add event listeners to the rating buttons -->
+        <button type="button" class="rating-button" value="800" onclick="logRating(800)">800</button>
+        <button type="button" class="rating-button" value="900" onclick="logRating(900)">900</button>
+        <button type="button" class="rating-button" value="1000" onclick="logRating(1000)">1000</button>
+        <button type="button" class="rating-button" value="1100" onclick="logRating(1100)">1100</button>
+        <button type="button" class="rating-button" value="1200" onclick="logRating(1200)">1200</button>
+        <button type="button" class="rating-button" value="1300" onclick="logRating(1300)">1300</button>
+        <button type="button" class="rating-button" value="1400" onclick="logRating(1400)">1400</button>
+        <button type="button" class="rating-button" value="1500" onclick="logRating(1500)">1500</button>
+        <button type="button" class="rating-button" value="1600" onclick="logRating(1600)">1600</button>
     </nav>
 
     <% if (typeof error !== 'undefined' && error !== null) { %>
@@ -52,9 +53,15 @@
             <% } else { %>
                 <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
             <% } %>
-        </div>
+            <div style="text-align: center; margin-top: 20px; color: green;">
+                <% if (typeof totalSolvedProblems !== 'undefined') { %>
+                    <p>Total problems solved: <%= totalSolvedProblems %></p>
+                <% } %>
+            </div>
         <table>
             <thead>
+                <!-- Add the line above the table -->
+                <!-- Table header -->
                 <tr>
                     <th>Problem Name</th>
                     <th>Tags</th>
@@ -63,6 +70,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Table body -->
                 <% problems
                 .filter(problem => problem.rating !== undefined && problem.rating !== null)
                 .sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity))
@@ -98,5 +106,51 @@
     <% } %>
 
 </body>
+<script>
+    let selectedRating = null; // Variable to store the selected rating
+
+const ratingButtons = document.querySelectorAll('.rating-button');
+
+ratingButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Deselect all buttons
+        ratingButtons.forEach(btn => btn.classList.remove('selected'));
+
+        // Select the clicked button
+        button.classList.add('selected');
+
+        // Update the selected rating
+        selectedRating = parseInt(button.value);
+
+        // Call the logRating function
+        logRating();
+    });
+});
+
+function logRating() {
+    if (selectedRating !== null) {
+        // Make an AJAX request to log the rating on the server
+        fetch(`/log-rating?rating=${selectedRating}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(`Selected Rating: ${data.rating}`);
+
+                // If you want to update the UI based on the server response, do it here
+                // For example, you can add a class to the selected button
+                ratingButtons.forEach(btn => {
+                    if (parseInt(btn.value) === selectedRating) {
+                        btn.classList.add('selected');
+                    }
+                });
+            })
+            .catch(error => console.error('Error logging rating:', error));
+    } else {
+        console.log('No rating selected');
+    }
+}
+
+
+
+    </script>
 
 </html>

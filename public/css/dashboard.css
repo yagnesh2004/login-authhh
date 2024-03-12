@@ -91,7 +91,8 @@ form label {
 }
 
 form input {
-    color: #747777;
+    font-family: "Sora", sans-serif;
+    color: #e6e6e6;
     margin-right: 20px;
     margin-left: 20px;
     width: 35%;
@@ -103,6 +104,7 @@ form input {
     align-items: center;
     background-color: #202222;
     border: 2px solid #3d3d3b;
+    font-size: 15px;
 
 }
 
@@ -157,20 +159,25 @@ form button:hover{
     cursor: pointer;
     border-radius: 5px;
     font-size: 15px;
-
+    outline: none; /* Remove default focus outline */
 }
 
 .rating button:hover {
     transform: scale(1.1);
-    border:2px solid #1faabe;
+    border: 2px solid #00879c;
     color: #ffffff;
-    background-color:#06c2de68 ;
-
-
+    background-color: #005f6d68;
 }
 
 .rating button:active {
+    border-color: #008da2;
+}
+
+/* Add styling for the selected state */
+.rating button.selected {
+    background-color: #06c2de68;
     border-color: #1faabe;
+    color: #ffffff;
 }
 
 nav {

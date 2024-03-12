@@ -167,6 +167,7 @@ app.get('/logout', (req, res) => {
 app.get('/dashboard', async (req, res) => {
     let loggedInUser; // Declare loggedInUser outside the try-catch block
     let handle; // Declare handle variable
+    let totalSolvedProblems = 0; // Initialize totalSolvedProblems
 
     try {
         loggedInUser = req.session.username;
@@ -174,7 +175,7 @@ app.get('/dashboard', async (req, res) => {
 
         // Fetch accepted submissions for the user
         handle = req.query.handle || '';
-        const userSubmissionUrl = `https://codeforces.com/api/user.status?handle=${handle}`;
+        const userSubmissionUrl = `https://codeforces.com/api/user.status?handle=${handle}&from=1&count=100000`;
         const userSubmissionsResponse = await axios.get(userSubmissionUrl);
 
         if (userSubmissionsResponse.data.status !== 'OK') {
@@ -184,6 +185,9 @@ app.get('/dashboard', async (req, res) => {
         // Filter only accepted submissions
         const acceptedSubmissions = userSubmissionsResponse.data.result.filter(submission => submission.verdict === 'OK');
         const uniqueAcceptedProblems = Array.from(new Set(acceptedSubmissions.map(submission => submission.problem.name)));
+        
+        // Count total solved problems
+        totalSolvedProblems = uniqueAcceptedProblems.length;
 
         // Fetch problems based on tags and rating
         const tags = req.query.tags || '';
@@ -198,7 +202,8 @@ app.get('/dashboard', async (req, res) => {
             handle, // Pass handle to the template
             topic_name: tags,
             error: null,
-            uniqueAcceptedProblems: uniqueAcceptedProblems
+            uniqueAcceptedProblems: uniqueAcceptedProblems,
+            totalSolvedProblems: totalSolvedProblems // Pass totalSolvedProblems to the template
         });
 
     } catch (error) {
@@ -223,6 +228,7 @@ app.get('/dashboard', async (req, res) => {
         }
     }
 });
+
 
 
 
