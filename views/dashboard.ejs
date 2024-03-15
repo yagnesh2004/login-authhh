@@ -12,13 +12,18 @@
     <div class="navi">
         <nav>
             <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
-            <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
-            <a href="/analyzer">Analyze</a>
-            <a href="#learn">Learn</a>
-            <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
-            <a href="#profile" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-user"></i></a>
+            <div class="left-links">
+                <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
+                <a href="/analyzer">Analyze</a>
+                <a href="#learn">Learn</a>
+                <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+            </div>
+            <div class="right-links">
+                <a href="/profile" rel="noopener noreferrer"><%= uname %><i class="fa-solid fa-angle-down"></i></a>
+            </div>
         </nav>
     </div>
+    
 
     <form action="/dashboard" method="get">
         <label for="tags">Enter Tags:</label>
@@ -57,7 +62,7 @@
         <% } %>
         <div style="text-align: center; margin-top: 20px; color: green;">
             <% if (typeof totalSolvedProblems !== 'undefined') { %>
-            <p>Total problems solved: <%= totalSolvedProblems %></p>
+            <p>Total problems solved: <%= totalSolvedProblems %></p> 
             <% } %>
         </div>
 
@@ -94,7 +99,7 @@
                     <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
                         orange<% /* Yellow for Time Limit Exceeded */ %>
                     <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                        red<% /* Red for Wrong Answer */ %>
+                        #b90e0a<% /* Red for Wrong Answer */ %>
                     <% } else { %>
                         inherit<% /* Default color */ %>
                     <% } %>;">
@@ -112,16 +117,16 @@
                     <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
                         orange<% /* Yellow for Time Limit Exceeded */ %>
                     <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                        red<% /* Red for Wrong Answer */ %>
+                        #b90e0a<% /* Red for Wrong Answer */ %>
                     <% } else { %>
                         inherit<% /* Default color */ %>
                     <% } %>;">
                     <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                        ACT<% /* Accepted */ %>
+                        Accepted<% /* Accepted */ %>
                     <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
-                        TIME LIMIT EXCEEDED<% /* Time Limit Exceeded */ %>
+                        TLE<% /* Time Limit Exceeded */ %>
                     <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                        WRONG ANSWER<% /* Wrong Answer */ %>
+                        Wrong Answer<% /* Wrong Answer */ %>
                     <% } else { %>
                         -<% /* Default */ %>
                     <% } %>

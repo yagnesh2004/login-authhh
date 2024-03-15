@@ -9,15 +9,21 @@
 </head>
 
 <body>
-    <nav>
-        <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/analyzer" style="background-color:#333333;">Analyze</a>
-        <a href="/learn">Learn</a>
-
-        <a href="">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
-        
-    </nav>
+    <div class="navi">
+        <nav>
+            <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
+            <div class="left-links">
+                <a href="/dashboard" >Dashboard</a>
+                <a href="/analyzer"style="background-color:#333333;">Analyze</a>
+                <a href="#learn">Learn</a>
+                <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+            </div>
+            <div class="right-links">
+                <a href="/profile" rel="noopener noreferrer"><%= uname  %> <i class="fa-solid fa-angle-down"></i></a>
+            </div>
+        </nav>
+    </div>
+    
     
     
     <!-- Include the form with the input box -->

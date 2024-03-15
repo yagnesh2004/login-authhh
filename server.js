@@ -143,10 +143,10 @@ app.post('/login', async (req, res) => {
 // Protected route
 // Assuming you have something like this in your server code
 app.get('/analyzer', (req, res) => {
-    res.render('analyzer');
+    const loggedInUser = req.session.username;
+    res.render('analyzer',{ uname: loggedInUser});
 });
 
-// POST request for the "/analyzer" endpoint
 // POST request for the "/analyzer" endpoint
 app.post('/analyzer', async (req, res) => {
     try {
@@ -161,12 +161,14 @@ app.post('/analyzer', async (req, res) => {
         console.log(user);
 
         res.render('analyzer', { uname: loggedInUser, user, error: null });
+
     } catch (error) {
         console.log("Error fetching user details:", error);
         const loggedInUser = req.session.username;
         res.render('analyzer', { uname: loggedInUser, user: null, error: 'Error fetching user details' });
     }
 });
+
 
 
 
@@ -241,7 +243,7 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
             if (submission.verdict === 'WRONG_ANSWER') {
                 wrongAnswerProblems.push(submission.problem.name);
             } else if (submission.verdict === 'TIME_LIMIT_EXCEEDED') {
-                timeLimitExceededProblems.push(submission.problem);
+                timeLimitExceededProblems.push(submission.problem.name);
             }
         });
 
@@ -301,4 +303,36 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
+});
+
+
+
+// Define the route handler
+// Define the route handler
+app.get('/profile', async (req, res) => {
+    let loggedInUser;
+    try {
+        // Get the username of the logged-in user from the session
+        loggedInUser = req.session.username;
+
+        // Query to fetch user information for the logged-in user
+        const query = 'SELECT username, first_name, last_name, user_image, email FROM userss WHERE username = $1';
+
+        // Execute the query with the username of the logged-in user
+        const { rows } = await pool.query(query, [loggedInUser]);
+
+        // If user details are found, render the profile page with the user information
+        if (rows.length > 0) {
+            console.log('Fetched user information:', rows[0]);
+            res.render('profile', { user: rows[0], uname: loggedInUser }); // Pass both user and uname
+        } else {
+            // If user details are not found, render an error page
+            console.error('User not found');
+            res.status(404).send('User not found');
+        }
+    } catch (error) {
+        console.error('Error fetching user information:', error);
+        // Handle error rendering profile page
+        res.status(500).send('Error fetching user information');
+    }
 });

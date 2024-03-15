@@ -1,10 +1,13 @@
 /* dashboard.css */
 
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
 body {
     background-color: #191a1a;
     font-family: "Sora", sans-serif;
     color: #747777;
+    margin: 0; /* Remove default body margin */
+    padding: 0; /* Remove default body padding */
 }
 
 h1 {
@@ -17,28 +20,29 @@ h1 {
 
 table {
     border-collapse: collapse;
-    width: 90%; /* Increase the width as needed */
+    width: 90%; /* Adjust as needed */
     margin: 0 auto;
     border: 2px solid white;
     border-radius: -50%;
-
     margin-top: 20px;
 }
 
 th, td {
     padding: 20px; /* Adjust padding as needed */
     text-align: center;
-    border: 30px solid #202222;
+    border: 25px solid #202222;
 }
+
 td a {
     font-size: 19px;
+}
 
-}
-th{
+th {
     background-color: #333333;
-    color:#e1e1df ;
+    color: #e1e1df ;
 }
-h2{
+
+h2 {
     font-weight: 400;
     font-size: 35px;
     text-align: center;
@@ -54,16 +58,17 @@ input {
 /* Add any additional styles specific to the dashboard if needed */
 
 /* Move the "hello yagensh" down to the logout button */
-nav .logout-container  {
+nav .logout-container {
     padding: 10px;
     background-color: #0498af;
     color: #1a2e31;
-    
 }
-nav .logout-container:hover{
+
+nav .logout-container:hover {
     background-color: #0498af;
 }
-p{
+
+p {
     color: #e1e1df;
     font-weight: 400;
     font-size: 33px;
@@ -75,11 +80,9 @@ p{
 form {
     background-color: red;
     display: flex;
-    margin-top: 14px ;
-    margin-left: 60px;
-    margin-right: 20px;
-    max-width: 80%;
-    padding: 20px 230px;
+    margin: 14px auto; /* Adjusted to fit screen */
+    max-width: 90%; /* Adjusted to fit screen */
+    padding: 20px; /* Adjusted padding */
     background-color: #202222;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -88,12 +91,11 @@ form {
 
 form label {
     margin-right: 20px;
-    margin-left:50px ;
+    margin-left: 50px;
     margin-bottom: 5px;
-    margin-top: 40px ;/* Adjust the margin as needed */
+    margin-top: 40px; /* Adjust the margin as needed */
     padding: 10px 30px;
     font-size: 20px;
-
 }
 
 form input {
@@ -102,7 +104,7 @@ form input {
     margin-right: 20px;
     margin-left: 20px;
     width: 35%;
-    padding: 20px 30px ;
+    padding: 20px 30px;
     margin-bottom: 5px;
     margin-top: 5px;
     box-sizing: border-box; /* Adjust the margin as needed */
@@ -111,16 +113,14 @@ form input {
     background-color: #202222;
     border: 2px solid #3d3d3b;
     font-size: 15px;
-
 }
 
 form button {
-    margin-right: 50px;
-    margin-left: 20px;
+    margin-right: 20px; /* Adjusted to fit screen */
+    margin-left: 20px; /* Adjusted to fit screen */
     font-family: "Sora", sans-serif;
     font-weight: 300;
-
-    width: 16%;
+    width: 20%; /* Adjusted to fit screen */
     padding: 8px;
     font-size: 20px;
     background-color: #1fb8cd; /* Violet color */
@@ -131,20 +131,19 @@ form button {
     height: 40px;
     margin-bottom: 5px;
     margin-top: 5px;
-    
 }
-form button:hover{
-    border: 2px solid #e3e3e3;
-    background-color:#22c1d9 ;
 
+form button:hover {
+    border: 2px solid #e3e3e3;
+    background-color: #22c1d9;
 }
+
 .user-details {
     font-family: "Sora", sans-serif;
     font-weight: 400px;
     font-size: 25px;
-
-
 }
+
 .rating {
     display: flex;
     justify-content: center;
@@ -192,14 +191,13 @@ nav {
     width: 100%;
     padding: 13px;
     color: #e1e1df;
-
 }
 
 nav a {
-    float:left;
+    float: left;
     font-size: 13px;
     display: block;
-    color:#e1e1df;
+    color: #e1e1df;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -209,7 +207,6 @@ nav a:hover {
     background-color: #333333;
     color: #ffffff;
     transition: all 0.2s;
-
 }
 
 .default-data p {
@@ -225,13 +222,48 @@ nav a:hover {
     align-items: center;
     justify-content: center;
 }
-.topic_name p{
+
+.topic_name p {
     font-size: 22px;
 }
+
 .topic_name .topic_name_right {
     color: #30fb2f;
 }
 
 .topic_name .topic_name_error {
     color: rgb(202, 0, 0);
+}
+
+.navi {
+    background-color: #202222;
+    overflow: hidden;
+    width: 100%;
+    padding: 13px;
+    color: #e1e1df;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left-links, .right-links {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    font-size: 13px;
+    color: #e1e1df;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: #333333;
+    color: #ffffff;
+    transition: all 0.2s;
 }
