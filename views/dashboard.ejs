@@ -4,6 +4,7 @@
 <head>
     <!-- Your head content here -->
     <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
+    <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 
@@ -13,8 +14,10 @@
             <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
             <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
             <a href="/analyzer">Analyze</a>
-            <a href="/learn">Learn</a>
+            <a href="#learn">Learn</a>
             <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+            <a href="#profile" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-user"></i></a>
+
         </nav>
     </div>
 
@@ -63,6 +66,8 @@
                 <!-- Add the line above the table -->
                 <!-- Table header -->
                 <tr>
+                    <th>S.No</th>
+
                     <th>Problem Name</th>
                     <th>Tags</th>
                     <th>Rating</th>
@@ -74,22 +79,22 @@
                 <% problems
                 .filter(problem => problem.rating !== undefined && problem.rating !== null)
                 .sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity))
-                .slice(0, 200) // Display only the first 30 problems
-                .forEach(problem => { %>
+                .slice(0, 100) // Display only the first 30 problems
+                .forEach((problem, index) => { %>
                 <tr>
+                    <td><%= index + 1 %></td>
                     <td>
-                        <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" target="_blank" style="text-decoration: none; color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'green' : 'inherit' %>;">
+                        <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" class="td-problem" target="_blank" style="text-decoration: none; color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? "#53fe53" : 'inherit' %>;">
                             <%= problem.name %>
                         </a>
                     </td>
                     <td><%= problem.tags.join(', ') %></td>
                     <td><%= problem.rating != null ? problem.rating : '-' %></td>
-                    <td class="Status_bar" style="color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'green' : 'inherit' %>;">
+                    <td class="Status_bar" style="color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? '#53fe53' : 'inherit' %>;">
                         <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'ACT' : '-' %>
                     </td>
                 </tr>
-            <% }); %>
-            
+                <% }); %>
             </tbody>
         </table>
     <% } else { %>

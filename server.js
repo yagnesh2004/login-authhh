@@ -1,4 +1,5 @@
 // server.js
+const nodemailer = require('nodemailer');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -19,6 +20,14 @@ const pool = new Pool({
     database: 'login',
     password: 'Yagnesh@123',
     port: 5432,
+});
+// Create a transporter with your SMTP settings
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'thealgorithm2000@gmail.com', // Admin email
+        pass: '0b111110100002000' // Admin email password
+    }
 });
 
 app.set('view engine', 'ejs');
@@ -69,7 +78,24 @@ app.post('/signup', async (req, res) => {
         }
 
         // Database Insertion
-        const result = await pool.query('INSERT INTO userss (username, password, email, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING *', [username, hashedPassword, email, firstname, lastname]);
+        const currentTime = new Date(); // Get the current time
+        const result = await pool.query('INSERT INTO userss (username, password, email, first_name, last_name, time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [username, hashedPassword, email, firstname, lastname, currentTime]);
+
+        // Sending email notification
+        const mailOptions = {
+            from: 'thealgorithm2000@gmail.com', // Admin email
+            to: email, // User's email
+            subject: 'Welcome to the Dork Platform!',
+            html: `<p>Hello ${firstname},</p><p>Thank you for registering with us! We're excited to have you on board.</p><p>Here's a greeting card to welcome you to the Dork Platform:</p><p><img src="https://example.com/greeting_card.jpg" alt="Greeting Card" style="max-width: 100%; height: auto;"></p><p>We hope you enjoy your time on our platform!</p>`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('Email sent:', info.response);
+            }
+        });
 
         // Redirect on Success
         res.redirect('/login');
@@ -78,6 +104,8 @@ app.post('/signup', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
 
 
 // Render the login form
