@@ -52,7 +52,6 @@ app.get('/signup', (req, res) => {
 });
 
 // POST route for handling signup form submission
-// POST route for handling signup form submission
 app.post('/signup', async (req, res) => {
     try {
         // Data Validation
@@ -191,11 +190,12 @@ app.get('/logout', (req, res) => {
 // Assuming you have something like this in your server code
 
 
-
 app.get('/dashboard', async (req, res) => {
     let loggedInUser; // Declare loggedInUser outside the try-catch block
     let handle; // Declare handle variable
     let totalSolvedProblems = 0; // Initialize totalSolvedProblems
+    const wrongAnswerProblemsSet = new Set();
+    const timeLimitExceededProblemsSet = new Set(); // Initialize array for time limit exceeded problems
 
     try {
         loggedInUser = req.session.username;
@@ -211,9 +211,45 @@ app.get('/dashboard', async (req, res) => {
         }
 
         // Filter only accepted submissions
-        const acceptedSubmissions = userSubmissionsResponse.data.result.filter(submission => submission.verdict === 'OK');
-        const uniqueAcceptedProblems = Array.from(new Set(acceptedSubmissions.map(submission => submission.problem.name)));
-        
+      // Filter only accepted submissions
+const acceptedSubmissions = userSubmissionsResponse.data.result.filter(submission => submission.verdict === 'OK');
+const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission => submission.problem.name))];
+
+
+        // Separate wrong answer and time limit exceeded problems
+        const latestSubmissionsMap = new Map(); // Map to store the latest submission for each problem
+        userSubmissionsResponse.data.result.forEach(submission => {
+            // Check if the problem is already in the map
+            if (latestSubmissionsMap.has(submission.problem.name)) {
+                // If it is, compare the submission time to determine if it's the latest one
+                const currentSubmissionTime = submission.creationTimeSeconds;
+                const previousSubmissionTime = latestSubmissionsMap.get(submission.problem.name).creationTimeSeconds;
+                if (currentSubmissionTime > previousSubmissionTime) {
+                    // Replace the previous submission with the current one
+                    latestSubmissionsMap.set(submission.problem.name, submission);
+                }
+            } else {
+                // If the problem is not in the map, add it
+                latestSubmissionsMap.set(submission.problem.name, submission);
+            }
+        });
+
+        // Iterate through the latest submissions map to separate wrong answer and time limit exceeded problems
+        const wrongAnswerProblems = [];
+        const timeLimitExceededProblems = [];
+        latestSubmissionsMap.forEach(submission => {
+            if (submission.verdict === 'WRONG_ANSWER') {
+                wrongAnswerProblems.push(submission.problem.name);
+            } else if (submission.verdict === 'TIME_LIMIT_EXCEEDED') {
+                timeLimitExceededProblems.push(submission.problem);
+            }
+        });
+
+        // Log the arrays for verification
+        console.log(wrongAnswerProblems);
+        console.log(timeLimitExceededProblems);
+        console.log(uniqueAcceptedProblems);
+
         // Count total solved problems
         totalSolvedProblems = uniqueAcceptedProblems.length;
 
@@ -231,6 +267,8 @@ app.get('/dashboard', async (req, res) => {
             topic_name: tags,
             error: null,
             uniqueAcceptedProblems: uniqueAcceptedProblems,
+            wrongAnswerProblems: wrongAnswerProblems,
+            timeLimitExceededProblems: timeLimitExceededProblems,
             totalSolvedProblems: totalSolvedProblems // Pass totalSolvedProblems to the template
         });
 
@@ -256,6 +294,7 @@ app.get('/dashboard', async (req, res) => {
         }
     }
 });
+
 
 
 

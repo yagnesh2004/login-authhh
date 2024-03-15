@@ -17,14 +17,15 @@
             <a href="#learn">Learn</a>
             <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
             <a href="#profile" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-user"></i></a>
-
         </nav>
     </div>
 
     <form action="/dashboard" method="get">
         <label for="tags">Enter Tags:</label>
-        <input type="text" id="handle" placeholder="Enter CF" name="handle" value="<%= locals.handle || '' %>" required>
-        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" value="<%= locals.tags || '' %>" required>
+        <input type="text" id="handle" placeholder="Enter CF" name="handle" value="<%= locals.handle || '' %>"
+            required>
+        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" value="<%= locals.tags || '' %>"
+            required>
         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
@@ -42,65 +43,97 @@
     </nav>
 
     <% if (typeof error !== 'undefined' && error !== null) { %>
-        <div class="default-data">
-            <i class="fa-brands fa-codepen"></i>
-            <p>" <%= error %> "</p>
-            <p>Enter a your valid credentials</p>
-
+    <div class="default-data">
+        <i class="fa-brands fa-codepen"></i>
+        <p>" <%= error %> "</p>
+        <p>Enter a your valid credentials</p>
+    </div>
+    <% } else if (problems && problems.length > 0) { %>
+    <div class="topic_name">
+        <% if (problems && problems.length === 0) { %>
+        <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
+        <% } else { %>
+        <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
+        <% } %>
+        <div style="text-align: center; margin-top: 20px; color: green;">
+            <% if (typeof totalSolvedProblems !== 'undefined') { %>
+            <p>Total problems solved: <%= totalSolvedProblems %></p>
+            <% } %>
         </div>
 
-    <% } else if (problems && problems.length > 0) { %>
-        <div class="topic_name">
-            <% if (problems && problems.length === 0) { %>
-                <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
-            <% } else { %>
-                <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
-            <% } %>
-            <div style="text-align: center; margin-top: 20px; color: green;">
-                <% if (typeof totalSolvedProblems !== 'undefined') { %>
-                    <p>Total problems solved: <%= totalSolvedProblems %></p>
-                <% } %>
-            </div>
+        <tr>
+            <td>Total solved</td>
+            <td>Topic solved</td>
+            <td>Unsolved</td>
+        </tr>
         <table>
             <thead>
                 <!-- Add the line above the table -->
                 <!-- Table header -->
                 <tr>
                     <th>S.No</th>
-
                     <th>Problem Name</th>
                     <th>Tags</th>
                     <th>Rating</th>
                     <th>Status</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Table body -->
-                <% problems
+            <!-- Table body -->
+            <% problems
                 .filter(problem => problem.rating !== undefined && problem.rating !== null)
                 .sort((a, b) => (a.rating || Infinity) - (b.rating || Infinity))
-                .slice(0, 100) // Display only the first 30 problems
+                .slice(0, 400) // Display only the first 30 problems
                 .forEach((problem, index) => { %>
-                <tr>
-                    <td><%= index + 1 %></td>
-                    <td>
-                        <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>" class="td-problem" target="_blank" style="text-decoration: none; color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? "#53fe53" : 'inherit' %>;">
-                            <%= problem.name %>
-                        </a>
-                    </td>
-                    <td><%= problem.tags.join(', ') %></td>
-                    <td><%= problem.rating != null ? problem.rating : '-' %></td>
-                    <td class="Status_bar" style="color: <%= locals.uniqueAcceptedProblems.includes(problem.name) ? '#53fe53' : 'inherit' %>;">
-                        <%= locals.uniqueAcceptedProblems.includes(problem.name) ? 'ACT' : '-' %>
-                    </td>
-                </tr>
-                <% }); %>
-            </tbody>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td>
+                    <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>"
+                        class="td-problem" target="_blank" style="text-decoration: none; color: 
+                    <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+                        #53fe53<% /* Green for accepted */ %>
+                    <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
+                        orange<% /* Yellow for Time Limit Exceeded */ %>
+                    <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
+                        red<% /* Red for Wrong Answer */ %>
+                    <% } else { %>
+                        inherit<% /* Default color */ %>
+                    <% } %>;">
+                        <%= problem.name %>
+                        <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+                        <i class="fas fa-check-circle" style="color: #53fe53;"></i><% /* Display checkmark for accepted */ %>
+                        <% } %>
+                    </a>
+                </td>
+                <td><%= problem.tags.join(', ') %></td>
+                <td><%= problem.rating != null ? problem.rating : '-' %></td>
+                <td class="Status_bar" style="color: 
+                    <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+                        #53fe53<% /* Green for accepted */ %>
+                    <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
+                        orange<% /* Yellow for Time Limit Exceeded */ %>
+                    <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
+                        red<% /* Red for Wrong Answer */ %>
+                    <% } else { %>
+                        inherit<% /* Default color */ %>
+                    <% } %>;">
+                    <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+                        ACT<% /* Accepted */ %>
+                    <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
+                        TIME LIMIT EXCEEDED<% /* Time Limit Exceeded */ %>
+                    <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
+                        WRONG ANSWER<% /* Wrong Answer */ %>
+                    <% } else { %>
+                        -<% /* Default */ %>
+                    <% } %>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
         </table>
-    <% } else { %>
+        <% } else { %>
         <div class="topic_name">
             <% if (problems && problems.length === 0) { %>
-                <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
+            <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
             <% } %>
         </div>
         <div class="default-data">
@@ -108,9 +141,9 @@
             <p>No data available / Error fetching problems </p>
             <p>Enter a valid topic</p>
         </div>
-    <% } %>
-
+        <% } %>
 </body>
+
 <script>
     let selectedRating = null; // Variable to store the selected rating
 
@@ -153,9 +186,6 @@ function logRating() {
         console.log('No rating selected');
     }
 }
-
-
-
-    </script>
+</script>
 
 </html>
