@@ -13,125 +13,119 @@
         <nav>
             <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
             <div class="left-links">
-                <a href="/dashboard" >Dashboard</a>
-                <a href="/analyzer"style="background-color:#333333;">Analyze</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/analyzer" style="background-color:#333333;">Analyze</a>
                 <a href="#learn">Learn</a>
                 <a href="#theme">Dark theme <i class="fa-solid fa-circle-half-stroke"></i></a>
             </div>
             <div class="right-links">
-                <a href="/profile" rel="noopener noreferrer"><%= uname  %> <i class="fa-solid fa-angle-down"></i></a>
+                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i> <%= uname %> <i
+                        class="fa-solid fa-angle-down"></i></a>
             </div>
         </nav>
     </div>
-    
-    
-    
+
     <!-- Include the form with the input box -->
     <form action="/analyzer" method="post">
         <label for="codeforcesHandle">Enter Codeforces Handle:</label>
-        <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle" required>
+        <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle"
+            required>
         <button type="submit">Analyze</button>
     </form>
 
-    <div class="user-details"> <!-- Opening div here -->
-        <% 
-            // Helper function to calculate the time difference
-            function calculateTimeDifference(timeSeconds) {
-                const currentTime = Math.floor(Date.now() / 1000);
-                const differenceInSeconds = currentTime - timeSeconds;
+    <div class="user-details">
+        <%
+            try {
+                function calculateTimeDifference(timeSeconds) {
+                    const currentTime = Math.floor(Date.now() / 1000);
+                    const differenceInSeconds = currentTime - timeSeconds;
 
-                const years = Math.floor(differenceInSeconds / (365 * 24 * 60 * 60));
-                const months = Math.floor((differenceInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
-                const days = Math.floor((differenceInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
-                const hours = Math.floor((differenceInSeconds % (24 * 60 * 60)) / (60 * 60));
+                    const years = Math.floor(differenceInSeconds / (365 * 24 * 60 * 60));
+                    const months = Math.floor((differenceInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
+                    const days = Math.floor((differenceInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+                    const hours = Math.floor((differenceInSeconds % (24 * 60 * 60)) / (60 * 60));
 
-                let result = '';
+                    let result = '';
 
-                if (years > 0) {
-                    result += `${years} years `;
+                    if (years > 0) {
+                        result += `${years} years `;
+                    }
+
+                    if (months > 0) {
+                        result += `${months} months `;
+                    }
+
+                    if (days > 0) {
+                        result += `${days} days `;
+                    }
+
+                    if (hours > 0) {
+                        result += `${hours} hours`;
+                    }
+
+                    return result.trim() || 'Less than an hour ago';
                 }
 
-                if (months > 0) {
-                    result += `${months} months `;
-                }
-
-                if (days > 0) {
-                    result += `${days} days `;
-                }
-
-                if (hours > 0) {
-                    result += `${hours} hours`;
-                }
-
-                return result.trim() || 'Less than an hour ago';
-            }
-
-            try { 
-        %>
-            <% if (locals.user) { %>
-                <h2>User Details</h2>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Image</td>
-                            <td><img src="<%= locals.user.avatar %>" alt="Avatar" style="max-width: 100%;"></td>
-                        </tr>
-                        <tr>
-                            <td>Codeforces Handle:</td>
-                            <td><%= locals.user.handle %></td>
-                        </tr>
-                        <tr>
-                            <td>Rating:</td>
-                            <td><%= locals.user.rating %> (Max: <%= locals.user.maxRating %>)</td>
-                        </tr>
-                        <tr>
-                            <td>Rank:</td>
-                            <td><%= locals.user.rank %> (Max: <%= locals.user.maxRank %>)</td>
-                        </tr>
-                        <tr>
-                            <td>Name:</td>
-                            <td><%= locals.user.firstName %> <%= locals.user.lastName %></td>
-                        </tr>
-                        <tr>
-                            <td>City & Country</td>
-                            <td><%= locals.user.country %>, <%= locals.user.city %></td>
-                        </tr>
-                        <tr>
-                            <td>Registration Time:</td>
-                            <td><%= calculateTimeDifference(locals.user.registrationTimeSeconds) %></td>
-                        </tr>
-                        <tr>
-                            <td>Last Online Time:</td>
-                            <td><%= calculateTimeDifference(locals.user.lastOnlineTimeSeconds) %></td>
-                        </tr>
-                        <tr>
-                            <td>Organization:</td>
-                            <td><%= locals.user.organization %></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-            <% } else { %>
-                <div class="default-data">
-                    <i class="fa-solid fa-database"></i>
-                    <p>No data available / Error fetching user details </p>
-                    <p>Enter a valid Codeforces id</p>
-
-                    
-                </div>
-                
-                
-            <% } %>
-        <% } catch (error) { %>
+                if (locals.user) { %>
+        <h2>User Details</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Image</td>
+                    <td><img src="<%= locals.user.avatar %>" alt="Avatar" style="max-width: 100%;"></td>
+                </tr>
+                <tr>
+                    <td>Codeforces Handle:</td>
+                    <td><%= locals.user.handle %></td>
+                </tr>
+                <tr>
+                    <td>Rating:</td>
+                    <td><%= locals.user.rating %> (Max: <%= locals.user.maxRating %>)</td>
+                </tr>
+                <tr>
+                    <td>Rank:</td>
+                    <td><%= locals.user.rank %> (Max: <%= locals.user.maxRank %>)</td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td><%= locals.user.firstName %> <%= locals.user.lastName %></td>
+                </tr>
+                <tr>
+                    <td>City & Country</td>
+                    <td><%= locals.user.country %>, <%= locals.user.city %></td>
+                </tr>
+                <tr>
+                    <td>Registration Time:</td>
+                    <td><%= calculateTimeDifference(locals.user.registrationTimeSeconds) %></td>
+                </tr>
+                <tr>
+                    <td>Last Online Time:</td>
+                    <td><%= calculateTimeDifference(locals.user.lastOnlineTimeSeconds) %></td>
+                </tr>
+                <tr>
+                    <td>Organization:</td>
+                    <td><%= locals.user.organization %></td>
+                </tr>
+            </tbody>
+        </table>
+        <% } else { %>
+        <div class="default-data-container">
+            <div class="default-data">
+                <i class="fa-solid fa-database"></i>
+                <p>No data available / Error fetching user details </p>
+                <p>Enter a valid Codeforces id</p>
+            </div>
+        </div>
+        <% }
+            } catch (error) { %>
+        <div class="default-data-container">
             <div class="default-data">
                 <i class="fa-solid fa-database"></i>
                 <p>Error fetching user details. Please try again.</p>
-
             </div>
-            
-            
+        </div>
         <% } %>
-    </div> 
+    </div>
 
 </body>
 
