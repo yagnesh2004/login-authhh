@@ -177,7 +177,18 @@ app.get('/home', (req, res) => {
     res.redirect('/');
     
 });
-
+app.get('/sheet', (req, res) => {
+    const loggedInUser = req.session.username;
+    // Render sheet.ejs
+    res.render('sheet', {
+        uname: loggedInUser,});
+});
+app.get('/explore', (req, res) => {
+    const loggedInUser = req.session.username;
+    // Render sheet.ejs
+    res.render('opportunities', {
+        uname: loggedInUser,});
+});
 // Handle logout
 app.get('/logout', (req, res) => {
     const loggedInUser = req.session.username;

@@ -4,7 +4,7 @@
 <head>
     <!-- Your head content here -->
     <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
-    <title>Dashboard</title>
+    <title>Practice</title>
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 
@@ -15,9 +15,11 @@
             <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
         </div>
         <div class="center-links">
-            <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
+            <a href="/dashboard" style="background-color:#333333;">Practice</a>
             <a href="/analyzer">Analyze</a>
-            <a href="#learn">Learn</a>
+            <a href="/sheet">Sheet</a>
+            <a href="/explore">Explore</a>
+
             <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
         </div>
         <div class="right-links">
@@ -61,7 +63,7 @@
             <% } else { %>
             <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
             <% } %>
-            <div style="text-align: center; margin-top: 20px; color: green;">
+            <div style="text-align: center; margin-top: 20px; color: #83ff83;">
                 <% if (typeof totalSolvedProblems !== 'undefined') { %>
                 <p>Total problems solved: <%= totalSolvedProblems %></p> 
                 <% } %>
@@ -99,9 +101,9 @@
                             <% } else { %>
                                 inherit<% /* Default color */ %>
                             <% } %>;">
-                            <span style="font-size: 25px;"><%= problem.name %></span>
+                            <span style="font-size: 20px;"><%= problem.name %></span>
                             <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                            <i class="fas fa-check-circle" style="color: #53fe53;"></i><% /* Display checkmark for accepted */ %>
+                            <i class="fas fa-check-circle" style="color: #83ff83;"></i><% /* Display checkmark for accepted */ %>
                             <% } %>
                         </a>
                     </td>
