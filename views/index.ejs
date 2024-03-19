@@ -78,28 +78,41 @@
             /* Add shadow for a better look */
             padding: 15px 0;
             /* Add padding to top and bottom */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        nav .logo {
-            color: #fff;
-            /* White color for the logo */
-            font-size: 24px;
-            /* Adjust the font size as needed */
-            font-weight: bold;
-            margin-left: 20px;
-            /* Add margin to the left */
-            float: left;
+        nav .left-links {
+            display: flex;
+            align-items: center;
+            margin-left: 20px; /* Increase left margin */
         }
 
-        nav a {
-            display: inline-block;
-            padding: 14px 16px;
+        nav .left-links i,
+        nav .left-links .logo {
+            color: white; /* Set color to white */
+            font-size: 24px; /* Adjust size if needed */
+            margin-right: 10px; /* Adjust margin between icon and logo */
+        }
+
+        nav .left-links .logo {
+            font-weight: bold; /* Optionally set font weight */
+        }
+
+        nav .center-links {
+            flex: 1; /* Take remaining space */
+            text-align: center; /* Center align links */
+        }
+
+        nav .center-links a {
+            margin: 0 10px;
             color: #fff;
             /* White color for the links */
             text-decoration: none;
         }
 
-        nav a:hover {
+        nav .center-links a:hover {
             background-color: #555;
             color: white;
             /* Darker gray on hover */
@@ -109,17 +122,22 @@
             margin-top: 70px;
             /* Adjust this margin to push content below the fixed navigation bar */
         }
+
     </style>
 </head>
 
 <body>
     <nav>
-        <i class="fa-solid fa-squarespace"></i>
-        <div class="logo">Dork</div>
-        <a href="#home">Home</a>
-        <a href="/login">About</a>
-        <a href="/login">Practice</a>
-        <a href="/login">Fellowships</a>
+        <div class="left-links">
+            <i class="fa-brands fa-squarespace"></i>
+            <div class="logo">Dork</div>
+        </div>
+        <div class="center-links">
+            <a href="#home">Home</a>
+            <a href="/login">About</a>
+            <a href="/login">Practice</a>
+            <a href="/login">Fellowships</a>
+        </div>
     </nav>
 
     <div id="content">
