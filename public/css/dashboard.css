@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 /* General Styling */
 body {
-    background-color: #191a1a;
+    background-color: #16181c;
     font-family: "Sora", sans-serif;
     color: #747777;
     margin: 0;
@@ -26,20 +26,23 @@ table {
     width: 90%;
     margin: 0 auto;
     border: 25px solid white; /* Increased border to 25px */
-    border-radius: 8px;
     margin-top: 20px;
+    border-radius:40%;
 }
 
 th,
 td {
+    border: 10px;
     padding: 20px;
     text-align: center;
-    border: 25px solid #202222; /* Adjusted border */
+    border: 25px solid #202222;
+    color: #939393; /* Adjusted border */
 }
 
 th {
     background-color: #333333;
     color: #e1e1df;
+    font-size: 19px;
 }
 
 /* Form Styles */
@@ -50,12 +53,16 @@ form {
     margin: 14px auto; /* Adjusted to fit screen */
     max-width: 90%; /* Adjusted to fit screen */
     padding: 20px 10px; /* Reduced inner padding */
-    background-color: #202222;
+    background-color: #16181c;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 0.1px solid #333333;
     border-radius: 8px;
     text-align: center; /* Center the form content */
 }
+form input{
+    color: #e6e6e6;
 
+}
 form input[type="text"] {
     font-family: "Sora", sans-serif;
     color: #e6e6e6;
@@ -65,10 +72,12 @@ form input[type="text"] {
     margin-top: 5px;
     box-sizing: border-box;
     height: 40px;
-    background-color: #202222;
-    border: 2px solid #3d3d3b;
+    background-color: #16181c;
+    border: 0.1px solid #e6e6e67b; /* Changed border color */
+    border-radius: 8px;
     font-size: 15px;
 }
+
 
 form button {
     font-family: "Sora", sans-serif;
@@ -108,23 +117,27 @@ form button:hover {
     justify-content: center;
     margin: 18px auto; /* Center the rating container and adjust top/bottom margin */
     padding: 10px;
-    background-color: #191a1a;
+    background-color: #16181c;
     overflow-x: auto; /* Enable horizontal scrolling if needed */
 }
 
 .rating button {
+    font-family: "Sora", sans-serif;
     background-color: #333333;
     color: #e3e3e3;
     width: 6%;
     height: 40px;
     border: 1px solid #3d3d3b;
-    padding: 15px 20px;
-    margin: 0 5px; /* Adjusted right and left margin */
+    padding: 0; /* Remove padding */
+    margin: 0 5px;
     transition: all 0.2s;
     cursor: pointer;
-    border-radius: 5px;
-    font-size: 15px;
+    border-radius: 10px;
+    font-size: 18px;
     outline: none;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 .rating button:hover {
@@ -133,6 +146,7 @@ form button:hover {
     color: #ffffff;
     background-color: #005f6d68;
 }
+
 
 .rating button:active {
     border-color: #008da2;
@@ -146,12 +160,47 @@ form button:hover {
 
 
 /* Navigation Styles */
+/* Navigation Styles */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
     color: #e1e1df;
+    position: relative; /* Make the navigation a positioned element */
+}
+
+nav a {
+    font-size: 17px;
+    color: #c2c4c5;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    position: relative; /* Make the anchor tag a positioned element */
+}
+
+nav a::after {
+    content: ""; /* Empty content for the pseudo-element */
+    position: absolute; /* Position the pseudo-element */
+    bottom: -3px; /* Adjust the distance of the bar from the text */
+    left: 50%; /* Position the bar in the center of the text */
+    transform: translateX(-50%); /* Center the bar horizontally */
+    width: 0; /* Initially set width to 0 */
+    height: 2px; /* Height of the bar */
+    background-color: #ffffff; /* Color of the bar */
+    transition: width 0.25s ease-in-out; /* Add transition for smooth effect */
+    cursor: pointer; /* Add pointer cursor on hover below the text */
+}
+
+nav a:hover::after {
+    width: 80%; /* Increase the width of the bar on hover */
+}
+
+nav a:hover {
+    border-radius: 15px;
+    background-color: #333333;
+    color: #ffffff;
+    transition: all 0.3s;
 }
 
 .left-links {
@@ -183,19 +232,7 @@ nav {
     margin-left: 10px; /* Adjust margin between logout link and username */
 }
 
-nav a {
-    font-size: 13px;
-    color: #e1e1df;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
 
-nav a:hover {
-    background-color: #333333;
-    color: #ffffff;
-    transition: all 0.2s;
-}
 
 
 
