@@ -9,26 +9,28 @@
 </head>
 
 <body>
-    <div class="navi">
-        <nav>
+    <nav style="background-color: #202222;">
+        <div class="left-links">
+            <i class="fa-brands fa-squarespace" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
+        </div>
+        <div class="center-links">
+            <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
+            <a href="/analyzer">Analyze</a>
+            <a href="#learn">Learn</a>
+            <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+        </div>
+        <div class="right-links">
+            <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
             <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
-            <div class="left-links">
-                <a href="/dashboard" style="background-color:#333333;">Dashboard</a>
-                <a href="/analyzer">Analyze</a>
-                <a href="#learn">Learn</a>
-                <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
-            </div>
-            <div class="right-links">
-                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
-            </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
+    
+    
     
     <form action="/dashboard" method="get">
-        <input type="text" id="handle" placeholder="Enter Codefoces id" name="handle" value="<%= locals.handle || '' %>"
-            required>
-        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" value="<%= locals.tags || '' %>"
-            required>
+        <input type="text" id="handle" placeholder="Enter Codeforces id" name="handle" value="<%= locals.handle || '' %>" required>
+        <input type="text" id="tags" placeholder="Enter problem tag" name="tags" value="<%= locals.tags || '' %>" required>
         <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
@@ -88,33 +90,34 @@
                     <td>
                         <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>"
                             class="td-problem" target="_blank" style="text-decoration: none; color: 
-                        <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                            #53fe53<% /* Green for accepted */ %>
-                        <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
-                            orange<% /* Yellow for Time Limit Exceeded */ %>
-                        <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                            #b90e0a<% /* Red for Wrong Answer */ %>
-                        <% } else { %>
-                            inherit<% /* Default color */ %>
-                        <% } %>;">
-                            <%= problem.name %>
+                            <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+                                #53fe53<% /* Green for accepted */ %>
+                            <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
+                                orange<% /* Yellow for Time Limit Exceeded */ %>
+                            <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
+                                #b90e0a<% /* Red for Wrong Answer */ %>
+                            <% } else { %>
+                                inherit<% /* Default color */ %>
+                            <% } %>;">
+                            <span style="font-size: 25px;"><%= problem.name %></span>
                             <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
                             <i class="fas fa-check-circle" style="color: #53fe53;"></i><% /* Display checkmark for accepted */ %>
                             <% } %>
                         </a>
                     </td>
+
                     <td><%= problem.tags.join(', ') %></td>
                     <td><%= problem.rating != null ? problem.rating : '-' %></td>
                     <td class="Status_bar" style="color: 
-                        <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                            #53fe53<% /* Green for accepted */ %>
-                        <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
-                            orange<% /* Yellow for Time Limit Exceeded */ %>
-                        <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                            #b90e0a<% /* Red for Wrong Answer */ %>
-                        <% } else { %>
-                            inherit<% /* Default color */ %>
-                        <% } %>;">
+                            <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+                                #53fe53<% /* Green for accepted */ %>
+                            <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
+                                orange<% /* Yellow for Time Limit Exceeded */ %>
+                            <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
+                                #b90e0a<% /* Red for Wrong Answer */ %>
+                            <% } else { %>
+                                inherit<% /* Default color */ %>
+                            <% } %>;">
                         <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
                             Accepted<% /* Accepted */ %>
                         <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
@@ -136,7 +139,7 @@
                 <% } %>
             </div>
             <div class="default-data">
-                <i class="fa-brands fa-codepen"></i>
+                <i class="fa-solid fa-server"></i>
                 <p>No data available / Error fetching problems </p>
                 <p>Enter a valid topic</p>
             </div>
@@ -148,45 +151,45 @@
 <script>
     let selectedRating = null; // Variable to store the selected rating
 
-const ratingButtons = document.querySelectorAll('.rating-button');
+    const ratingButtons = document.querySelectorAll('.rating-button');
 
-ratingButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Deselect all buttons
-        ratingButtons.forEach(btn => btn.classList.remove('selected'));
+    ratingButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Deselect all buttons
+            ratingButtons.forEach(btn => btn.classList.remove('selected'));
 
-        // Select the clicked button
-        button.classList.add('selected');
+            // Select the clicked button
+            button.classList.add('selected');
 
-        // Update the selected rating
-        selectedRating = parseInt(button.value);
+            // Update the selected rating
+            selectedRating = parseInt(button.value);
 
-        // Call the logRating function
-        logRating();
+            // Call the logRating function
+            logRating();
+        });
     });
-});
 
-function logRating() {
-    if (selectedRating !== null) {
-        // Make an AJAX request to log the rating on the server
-        fetch(`/log-rating?rating=${selectedRating}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(`Selected Rating: ${data.rating}`);
+    function logRating() {
+        if (selectedRating !== null) {
+            // Make an AJAX request to log the rating on the server
+            fetch(`/log-rating?rating=${selectedRating}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(`Selected Rating: ${data.rating}`);
 
-                // If you want to update the UI based on the server response, do it here
-                // For example, you can add a class to the selected button
-                ratingButtons.forEach(btn => {
-                    if (parseInt(btn.value) === selectedRating) {
-                        btn.classList.add('selected');
-                    }
-                });
-            })
-            .catch(error => console.error('Error logging rating:', error));
-    } else {
-        console.log('No rating selected');
+                    // If you want to update the UI based on the server response, do it here
+                    // For example, you can add a class to the selected button
+                    ratingButtons.forEach(btn => {
+                        if (parseInt(btn.value) === selectedRating) {
+                            btn.classList.add('selected');
+                        }
+                    });
+                })
+                .catch(error => console.error('Error logging rating:', error));
+        } else {
+            console.log('No rating selected');
+        }
     }
-}
 </script>
 
 </html>
