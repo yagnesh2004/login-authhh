@@ -6,6 +6,9 @@
     <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
     <title>Practice</title>
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -48,7 +51,26 @@
         <button type="button" class="rating-button" value="1500" onclick="logRating(1500)">1500</button>
         <button type="button" class="rating-button" value="1600" onclick="logRating(1600)">1600</button>
     </nav>
-
+    <div class="default-data-container" style="display: flex; justify-content: center; background-color: #202222; margin-top: 5px;">
+        <div class="card-user" style="background-color: #192428; border:2px solid #0044a3; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 500; font-size: 15px"> <!-- Increased font size by 15px -->
+            <% if (locals.topic_name) { %>
+                <p class="topic_name_right"><i class="fa-regular fa-user"></i>  <%= locals.handle %></p>
+            <% } %>
+        </div>
+        <div class="card-user" style="font-weight: 500; background-color: #192428; border: 2px solid #0044a3; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 600; font-size: 15px"> <!-- Increased font size by 15px -->
+            <div style="text-align: center;">
+                <% if (typeof totalSolvedProblems !== 'undefined') { %>
+                    <p>Solved :  <%= totalSolvedProblems %></p> 
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
     <div class="default-data-container" style="text-align: center;">
         <% if (typeof error !== 'undefined' && error !== null) { %>
         <div class="default-data">
@@ -58,16 +80,19 @@
         </div>
         <% } else if (problems && problems.length > 0) { %>
         <div class="topic_name">
-            <% if (problems && problems.length === 0) { %>
-            <p class="topic_name_error"><%= locals.handle %> -> <%= locals.topic_name %> topic not found!</p>
-            <% } else { %>
-            <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
-            <% } %>
-            <div style="text-align: center; margin-top: 20px; color: #83ff83;">
-                <% if (typeof totalSolvedProblems !== 'undefined') { %>
-                <p>Total problems solved: <%= totalSolvedProblems %></p> 
+            <div class="card">
+                <% if (locals.topic_name) { %>
+                    <p class="topic_name_right"> <%= locals.handle %> -> { <%= locals.topic_name %> } </p>
+                <% } else { %>
+                    <div style="text-align: center; margin-top: 20px; color: #83ff83;">
+                        <% if (typeof totalSolvedProblems !== 'undefined') { %>
+                            <p>Total problems solved: <%= totalSolvedProblems %></p> 
+                        <% } %>
+                    </div>
                 <% } %>
             </div>
+        </div>    
+            
 
             <table>
                 <thead>

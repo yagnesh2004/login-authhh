@@ -106,7 +106,7 @@ form button:hover {
 .rating {
     display: flex;
     justify-content: center;
-    margin: 30px auto; /* Center the rating container and adjust top/bottom margin */
+    margin: 18px auto; /* Center the rating container and adjust top/bottom margin */
     padding: 10px;
     background-color: #191a1a;
     overflow-x: auto; /* Enable horizontal scrolling if needed */
@@ -213,3 +213,6 @@ nav a:hover {
     font-size: 24px; /* Keep the paragraph font size */
     margin-bottom: 10px; /* Add space between paragraphs */
 }
+
+
+
