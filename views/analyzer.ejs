@@ -18,7 +18,7 @@
             </div>
             <div class="center-links">
                 <a href="/dashboard">Practice</a>
-                <a href="/analyzer"  style="background-color:#333333;">Analyze</a>
+                <a href="/analyzer"  style="background-color:#333333;color: #ffffff;border-radius: 15px;">Analyze</a>
                 <a href="/sheet">Sheet</a>
                 <a href="/explore">Explore</a>
 
@@ -31,12 +31,14 @@
         </nav>
     </div>
     <!-- Include the form with the input box -->
-    <form action="/analyzer" method="post">
-        <label for="codeforcesHandle">Enter Codeforces Handle:</label>
-        <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle"
-            required>
-        <button type="submit">Analyze</button>
+    <form action="/analyzer" method="post" style="display: flex; align-items: center;">
+        <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle" required
+            style="width: 40%; padding: 10px; margin-right: 10px; border: 1px solid #333; border-radius: 5px;">
+        <button type="submit" style="width: 20%; padding: 10px 20px; font-size: 16px; background-color: #1fb8cd; color: #1a2e31; border: none; border-radius: 5px; cursor: pointer;">Analyze</button>
     </form>
+    
+    
+    
 
     <div class="user-details">
         <%
