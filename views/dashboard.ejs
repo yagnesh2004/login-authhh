@@ -61,12 +61,12 @@
         <button type="button" class="rating-button" value="1600" onclick="logRating(1600)">1600</button>
     </nav>
     <div class="default-data-container" style="display: flex; justify-content: center; background-color: #16181c; margin-top: 5px;">
-        <div class="card-user" style="background-color: #192428; border:2px solid #0044a3; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 500; font-size: 15px"> <!-- Increased font size by 15px -->
+        <div class="card-user" style="background-color: #06101dd9; border:2px solid #003681c0; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 500; font-size: 15px"> <!-- Increased font size by 15px -->
             <% if (locals.topic_name) { %>
                 <p class="topic_name_right"><i class="fa-regular fa-user"></i>  <%= locals.handle %></p>
             <% } %>
         </div>
-        <div class="card-user" style="font-weight: 500; background-color: #192428; border: 2px solid #0044a3; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 600; font-size: 15px"> <!-- Increased font size by 15px -->
+        <div class="card-user" style="font-weight: 500; background-color: #06101dd9; border: 2px solid #003681c0; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 600; font-size: 15px"> <!-- Increased font size by 15px -->
             <div style="text-align: center;">
                 <% if (typeof totalSolvedProblems !== 'undefined') { %>
                     <p>Solved :  <%= totalSolvedProblems %></p> 
@@ -85,7 +85,7 @@
         <div class="default-data">
             <i class="fa-brands fa-codepen"></i>
             <p>" <%= error %> "</p>
-            <p>Enter a your valid credentials</p>
+            <p>Enter your valid credentials</p>
         </div>
         <% } else if (problems && problems.length > 0) { %>
         <div class="topic_name">

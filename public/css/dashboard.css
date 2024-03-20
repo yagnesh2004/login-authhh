@@ -35,14 +35,15 @@ td {
     border: 10px;
     padding: 20px;
     text-align: center;
-    border: 25px solid #202222;
+    border: 25px solid #202222b2;
     color: #939393; /* Adjusted border */
 }
 
 th {
-    background-color: #333333;
+    font-weight: 400;
+    background-color: #333333cc;
     color: #e1e1df;
-    font-size: 19px;
+    font-size: 20px;
 }
 
 /* Form Styles */
@@ -85,7 +86,8 @@ form button {
     width: 10%; /* 10% of the entire form container */
     padding: 8px 20px; /* Adjusted padding */
     font-size: 20px;
-    background-color: #1fb8cd; /* Violet color */
+    background-color: #005f6d68;
+    border-color: #1faabe; 
     color: #1a2e31;
     border: none;
     border-radius: 5px;
@@ -106,7 +108,10 @@ form .input-group label {
 
 form button:hover {
     border: 2px solid #e3e3e3;
-    background-color: #22c1d9;
+    background-color: #005f6d68;
+    border-color: #1faabe; 
+
+
 }
 
 
