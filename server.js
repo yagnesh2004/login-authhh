@@ -113,6 +113,8 @@ app.get('/login', (req, res) => {
 });
 
 // Handle login form submission
+const moment = require('moment-timezone'); // Import the moment-timezone library
+
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -126,6 +128,18 @@ app.post('/login', async (req, res) => {
                 req.session.userId = result.rows[0].id;
                 req.session.username = result.rows[0].username;
 
+                const loginTime = moment().utc().format("X"); // Get current time in UTC format
+                const country = getUserCountry(); // Get user's country (function to be defined)
+
+                // Insert login data into login_data table
+                const insertQuery = `
+                    INSERT INTO login_data (user_name, login_time, country)
+                    VALUES ($1, $2, $3)
+                `;
+                await pool.query(insertQuery, [username, loginTime, country]);
+
+                console.log(username + " Logged in");
+
                 res.redirect('/dashboard');
             } else {
                 res.render('login.ejs', { error: 'Invalid username or password' });
@@ -138,6 +152,13 @@ app.post('/login', async (req, res) => {
         res.render('login.ejs', { error: 'An error occurred' });
     }
 });
+
+// Function to get the user's country (You need to implement this function)
+function getUserCountry() {
+    // Logic to determine user's country based on their IP address or any other method
+    // Return the country code (e.g., 'US', 'IN', 'RU', etc.)
+    return 'US'; // Example country code for demonstration
+}
 
 
 // Protected route
@@ -203,7 +224,11 @@ app.get('/logout', (req, res) => {
 // Assuming you have something like this in your server code
 
 
+        
+
+
 app.get('/dashboard', async (req, res) => {
+    let user;
     let loggedInUser; // Declare loggedInUser outside the try-catch block
     let handle; // Declare handle variable
     let totalSolvedProblems = 0; // Initialize totalSolvedProblems
@@ -212,7 +237,6 @@ app.get('/dashboard', async (req, res) => {
 
     try {
         loggedInUser = req.session.username;
-        console.log(loggedInUser + " Logged in");
 
         // Fetch accepted submissions for the user
         handle = req.query.handle || '';
@@ -272,10 +296,14 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
         const apiUrl = `https://codeforces.com/api/problemset.problems?tags=${tags}&rating=${rating}`;
         const response = await axios.get(apiUrl);
         const problems = response.data.result.problems;
+        const apiUrll = `https://codeforces.com/api/user.info?handles=${handle}&checkHistoricHandles=false`;
+        const responsee= await axios.get(apiUrll);
+        const user = responsee.data.result[0];
 
         res.render('dashboard', {
             uname: loggedInUser,
             problems,
+            user,
             handle, // Pass handle to the template
             topic_name: tags,
             error: null,
@@ -291,6 +319,7 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
         if (error.response && error.response.status === 400) {
             res.render('dashboard', {
                 uname: loggedInUser,
+                user,
                 problems: null,
                 handle, // Pass handle to the template
                 storedRating: null,
@@ -299,6 +328,7 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
         } else {
             res.render('dashboard', {
                 uname: loggedInUser,
+                user,
                 problems: null,
                 handle, // Pass handle to the template
                 storedRating: null,
