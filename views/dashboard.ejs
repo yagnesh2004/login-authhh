@@ -72,8 +72,59 @@
                     <p>Solved :  <%= totalSolvedProblems %></p> 
                 <% } %>
             </div>
+
         </div>
+
+        <% if (locals.user && locals.user.rank) { %> <!-- Added a check for locals.user -->
+            <% var rank = locals.user.rank.toLowerCase(); %>
+            <% var backgroundColor = ''; %>
+            <% var borderColor = ''; %>
+        
+            <% switch (rank) {
+                case 'legendary grandmaster':
+                case 'international grandmaster':
+                case 'grandmaster':
+                    backgroundColor = '#4c0000';
+                    borderColor = '#800000';
+                    break;
+                case 'international master':
+                case 'master':
+                    backgroundColor = '#d25800aa';
+                    borderColor = '#ff7d00';
+                    break;
+                case 'candidate master':
+                    backgroundColor = '#1e002a';
+                    borderColor = '#4a006a';
+                    break;
+                case 'expert':
+                    backgroundColor = '#001b39';
+                    borderColor = '#001c56';
+                    break;
+                case 'specialist':
+                    backgroundColor = '#003838';
+                    borderColor = '#006161';
+
+                    break;
+                case 'pupil':
+                    backgroundColor = 'rgb(7,33,15)';
+                    borderColor = '#208c23';
+
+                    break;
+                default:
+                    // Default color if rank is not matched
+                    backgroundColor = '#06101dd9';
+                    borderColor = '#003681c0';
+                    break;
+            } %>
+            <div class="card-user" style="background-color: <%= backgroundColor %>; border: 2px solid <%= borderColor || backgroundColor %>; font-weight: 500; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-size: 15px"> <!-- Increased font size by 15px -->
+                <div style="text-align: center;">
+                    <p><i class="fa-solid fa-bolt"></i> <%=" " %>   <%= locals.user.rank %></p>
+                </div>
+            </div>
+        <% } %>
+        
     </div>
+        
     
     
     
@@ -88,20 +139,7 @@
             <p>Enter your valid credentials</p>
         </div>
         <% } else if (problems && problems.length > 0) { %>
-        <div class="topic_name">
-            <div class="card">
-                <% if (locals.topic_name) { %>
-                    <p class="topic_name_right"> Query -> { <%= locals.topic_name %> } </p>
-                <% } else { %>
-                    <div style="text-align: center; margin-top: 20px; color: #83ff83;">
-                        <% if (typeof totalSolvedProblems !== 'undefined') { %>
-                            <p>Total problems solved: <%= totalSolvedProblems %></p> 
-                        <% } %>
-                    </div>
-                <% } %>
-            </div>
-        </div>    
-            
+      
 
             <table>
                 <thead>
