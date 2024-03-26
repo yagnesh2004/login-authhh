@@ -5,15 +5,26 @@
     <!-- Your head content here -->
     <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
     <title>Practice</title>
-    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
+    <link id="theme-style" rel="stylesheet" type="text/css" href="/css/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
+<style>
+   tr {
+    transition: background-color 0.3s; /* Add transition effect for background color */
+}
+
+tr:hover {
+    background-color: #2b2f3695; /* Change background color on hover */
+    color: #c1c1c1; /* Adjusted border */
+}
+
+</style>
 </head>
 
 <body>
     <div class="navi">
-        <nav style="background-color: #202222;">
+        <nav style="">
             <div class="left-links">
                 <i class="fa-brands fa-squarespace" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                 <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
@@ -23,30 +34,26 @@
                 <a href="/analyzer">Analyze</a>
                 <a href="/sheet">Sheet</a>
                 <a href="/explore">Explore</a>
-    
-                <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+
             </div>
             <div class="right-links">
-                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
+                <!-- Replace the sun logo with the moon logo -->
+                <a href="#" id="theme-toggle" onclick="toggleTheme()"><i class="far fa-sun"></i></a>
+                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i> <%= uname %><i class="fa-solid fa-angle-down"></i></a>
                 <a href="/logout" class="logout-container">
                     <i class="fa-solid fa-right-from-bracket" title="Logout"></i>
                 </a>
             </div>
         </nav>
-
     </div>
-    
-    
-    
-    
+
     <form action="/dashboard" method="get">
         <div style="display: flex; justify-content: space-between; align-items: center; margin: 5px auto; max-width: 90%; padding: 2px; background-color: #16181c; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border: 0.1px solid #ffffff00; border-radius: 8px; text-align: center;">
             <input type="text" id="handle" placeholder="Enter Codeforces id" name="handle" value="<%= locals.handle || '' %>" required style="font-family: 'Sora', sans-serif; color: #e6e6e6; width: 40%; padding: 12px 20px; margin-right: 20px; box-sizing: border-box; height: 40px; background-color: #16181c; border: 0.1px solid #e6e6e67b; border-radius: 8px; font-size: 15px;">
             <input type="text" id="tags" placeholder="Enter problem tag" name="tags" value="<%= locals.tags || '' %>" required style="font-family: 'Sora', sans-serif; color: #e6e6e6; width: 40%; padding: 12px 20px; margin-right:20px; box-sizing: border-box; height: 40px; background-color: #16181c; border: 0.1px solid #e6e6e67b; border-radius: 8px; font-size: 15px;">
-            <button type="submit" style="font-family: 'Sora', sans-serif; font-weight: 300; width: 20%; padding: 8px 20px; font-size: 20px; background-color: #1fb8cd; color: #1a2e31; border: none; border-radius: 5px; cursor: pointer; height: 40px; font-weight: 500;"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+            <button type="submit" style="font-family: 'Sora', sans-serif; font-weight: 300; width: 10%; padding: 8px 20px; font-size: 20px; background-color: #8791c1; color: #1a2e31;  border-radius: 5px; cursor: pointer; height: 40px; font-weight: 500;"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
         </div>
     </form>
-    
 
     <nav class="rating">
         <!-- Add event listeners to the rating buttons -->
@@ -60,7 +67,7 @@
         <button type="button" class="rating-button" value="1500" onclick="logRating(1500)">1500</button>
         <button type="button" class="rating-button" value="1600" onclick="logRating(1600)">1600</button>
     </nav>
-    <div class="default-data-container" style="display: flex; justify-content: center; background-color: #16181c; margin-top: 5px;">
+    <div class="default-data-container" style="display: flex; justify-content: center; background-color:None; margin-top: 5px;">
         <div class="card-user" style="background-color: #06101dd9; border:2px solid #003681c0; border-radius: 10px; padding: 2px 30px; color: rgb(193, 193, 193); margin: 0 5px; font-weight: 500; font-size: 15px"> <!-- Increased font size by 15px -->
             <% if (locals.topic_name) { %>
                 <p class="topic_name_right"><i class="fa-regular fa-user"></i>  <%= locals.handle %></p>
@@ -160,49 +167,56 @@
                     .slice(0, 400) // Display only the first 30 problems
                     .forEach((problem, index) => { %>
                 <tr>
-                    <td><%= index + 1 %></td>
-                    <td>
-                        <a href="<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>"
-                            class="td-problem" target="_blank" style="text-decoration: none; color: 
-                            <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                                #53fe53<% /* Green for accepted */ %>
-                            <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
-                                orange<% /* Yellow for Time Limit Exceeded */ %>
-                            <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                                #b90e0a<% /* Red for Wrong Answer */ %>
-                            <% } else { %>
-                                inherit<% /* Default color */ %>
-                            <% } %>;">
-                            <span style="font-size: 20px;"><%= problem.name %></span>
-                            <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                            <i class="fas fa-check-circle" style="color: #83ff83;"></i><% /* Display checkmark for accepted */ %>
-                            <% } %>
-                        </a>
-                    </td>
+<%
+    let tagColor, ratingColor, statusColor;
 
-                    <td><%= problem.tags.join(', ') %></td>
-                    <td><%= problem.rating != null ? problem.rating : '-' %></td>
-                    <td class="Status_bar" style="color: 
-                            <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                                #53fe53<% /* Green for accepted */ %>
-                            <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
-                                orange<% /* Yellow for Time Limit Exceeded */ %>
-                            <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                                #b90e0a<% /* Red for Wrong Answer */ %>
-                            <% } else { %>
-                                inherit<% /* Default color */ %>
-                            <% } %>;">
-                        <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
-                            Accepted<% /* Accepted */ %>
-                        <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
-                            TLE<% /* Time Limit Exceeded */ %>
-                        <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-                            Wrong Answer<% /* Wrong Answer */ %>
-                        <% } else { %>
-                            -<% /* Default */ %>
-                        <% } %>
-                    </td>
-                </tr>
+    if (locals.uniqueAcceptedProblems.includes(problem.name)) {
+        tagColor = '#53fe53'; // Green for accepted
+        ratingColor = '#53fe53';
+        statusColor = '#53fe53';
+    } else if (locals.timeLimitExceededProblems.includes(problem.name)) {
+        tagColor = 'orange'; // Orange for Time Limit Exceeded
+        ratingColor = 'orange';
+        statusColor = 'orange';
+    } else if (locals.wrongAnswerProblems.includes(problem.name)) {
+        tagColor = '#b90e0a'; // Red for Wrong Answer
+        ratingColor = '#b90e0a';
+        statusColor = '#b90e0a';
+    } else {
+        tagColor = 'inherit'; // Default color
+        ratingColor = 'inherit';
+        statusColor = 'inherit';
+    }
+%>
+<tr onclick="window.open('<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>','_blank');" style="cursor: pointer;">
+    <td><%= index + 1 %></td>
+    <td style="color: <%= statusColor %>;">
+        <span style="font-size: 20px;"><%= problem.name %></span>
+        <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+        <i class="fas fa-check-circle" style="color: #83ff83;"></i><% /* Display checkmark for accepted */ %>
+        <% } %>
+    </td>
+    <td style="color: <%= tagColor %>;">
+        <%= problem.tags.join(', ') %>
+    </td>
+    <td style="color: <%= ratingColor %>;">
+        <%= problem.rating != null ? problem.rating : '-' %>
+    </td>
+    <td class="Status_bar" style="color: <%= statusColor %>;">
+        <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
+        Accepted<% /* Accepted */ %>
+        <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
+        TLE<% /* Time Limit Exceeded */ %>
+        <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
+        Wrong Answer<% /* Wrong Answer */ %>
+        <% } else { %>
+        -<% /* Default */ %>
+        <% } %>
+    </td>
+</tr>
+
+
+
                 <% }); %>
             </tbody>
             </table>
@@ -264,6 +278,33 @@
             console.log('No rating selected');
         }
     }
-</script>
+    function toggleTheme() {
+    const themeStyle = document.getElementById('theme-style');
+    const themeToggle = document.getElementById('theme-toggle');
+    let currentTheme = localStorage.getItem('theme');
 
+    if (!currentTheme || currentTheme === 'dashboard') {
+        themeStyle.setAttribute('href', '/css/light.css');
+        themeToggle.innerHTML = '<i class="far fa-moon"></i>'; // Change sun to moon
+        localStorage.setItem('theme', 'light');
+    } else {
+        themeStyle.setAttribute('href', '/css/dashboard.css');
+        themeToggle.innerHTML = '<i class="far fa-sun"></i>'; // Change moon to sun
+        localStorage.setItem('theme', 'dashboard');
+    }
+}
+
+
+
+    // Check local storage for theme and apply it on page load
+    window.onload = function () {
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'light') {
+        toggleTheme();
+    }
+};
+
+
+</script>
+<script src="/views/theme-switcher.js"></script>
 </html>
