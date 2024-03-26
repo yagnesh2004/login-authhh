@@ -3,9 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 /* General Styling */
 body {
-    background-color: #16181c;
+    background-color: #ffffff;
     font-family: "Sora", sans-serif;
-    color: #747777;
+    color: #1b1b1b;
     margin: 0;
     padding: 0;
 }
@@ -14,7 +14,7 @@ body {
 h1 {
     font-size: 80px;
     text-align: center;
-    color: #e1e1df;
+    color: #1b1b1b;
     margin-top: 2vh;
     transform: translateY(-50%);
 }
@@ -87,16 +87,15 @@ form button {
     width: 10%; /* 10% of the entire form container */
     padding: 8px 20px; /* Adjusted padding */
     font-size: 20px;
-    background-color: #8791c1;
-    border-color: #3d4259; 
+    background-color: #005f6d68;
+    border-color: #1faabe; 
+    color: #1a2e31;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     height: 40px;
     margin-bottom: 5px;
     margin-top: 5px;
-    border: 2px solid #3d4259;
-
 }
 
 form .input-group {
@@ -109,10 +108,9 @@ form .input-group label {
 }
 
 form button:hover {
-    transition: background-color 0.3s; /* Add transition effect for background color */
-
-    border: 2px solid #3d4259;
-    border-color: #3d4259; 
+    border: 2px solid #e3e3e3;
+    background-color: #005f6d68;
+    border-color: #1faabe; 
 
 
 }
@@ -125,7 +123,7 @@ form button:hover {
     justify-content: center;
     margin: 18px auto; /* Center the rating container and adjust top/bottom margin */
     padding: 10px;
-    background-color:#16181c;
+    background-color:None;
     overflow-x: auto; /* Enable horizontal scrolling if needed */
 }
 
@@ -170,18 +168,17 @@ form button:hover {
 /* Navigation Styles */
 /* Navigation Styles */
 nav {
-    background-color: #202222;
+    background-color: #f7f7f7;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
-    color: #e1e1df;
+    color: #1b1b1b;
     position: relative; /* Make the navigation a positioned element */
 }
 
 nav a {
     font-size: 16px;
-    color: #c2c4c5;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -211,25 +208,6 @@ nav a:hover {
     color: #ffffff;
     transition: all 0.3s;
 }
-nav #theme-toggle i.far{
-    background-color: None;
-
-
-}
-#theme-toggle i.far {
-    transition: color 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease; /* Apply transition for smooth color, rotation, and shadow change */
-}
-
-/* Change rotation, color, and shadow when hovered */
-#theme-toggle:hover i.far {
-    border: 1px solid #3d4259;
-    color: #c291e2; /* Change color on hover */
-    transform: rotate(30deg); /* Apply rotation on hover */
-    transition: color 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease; /* Apply transition for smooth color, rotation, and shadow change */
-}
-
-
-
 
 .left-links {
     display: flex;

@@ -134,8 +134,7 @@ app.post('/login', async (req, res) => {
                 // Insert login data into login_data table
                 const insertQuery = `
                     INSERT INTO login_data (user_name, login_time, country)
-                    VALUES ($1, $2, $3)
-                `;
+                    VALUES ($1, $2, $3);`;
                 await pool.query(insertQuery, [username, loginTime, country]);
 
                 console.log(username + " Logged in");
@@ -152,6 +151,7 @@ app.post('/login', async (req, res) => {
         res.render('login.ejs', { error: 'An error occurred' });
     }
 });
+
 
 // Function to get the user's country (You need to implement this function)
 function getUserCountry() {
