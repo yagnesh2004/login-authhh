@@ -11,8 +11,6 @@ h1 {
     color: #333; /* You can change the color as per your preference */
     font-size: 80px;
     text-align: center;
-    margin-top: 40vh; /* Adjust the margin-top to center the text vertically */
-    transform: translateY(-50%);
 }
 h1 {
     color: #333;
@@ -21,6 +19,14 @@ h1 {
 .button-container {
     text-align: center;
     margin-top: 20px;
+}
+.name-inputs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-wrapper {
+    width: 40%;
 }
 
 
@@ -59,37 +65,9 @@ button.signup:hover {
 
 
 /* styles.css */
-.loader {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    margin: auto;
-    margin-top: 50vh;
-}
 
-.analysis-website {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    margin-left: 40px;
-    margin-left: 40px;
-    margin-bottom: 0px;
-    overflow: hidden;
 
-}
 
-.analysis-website h2 {
-    font-family: "Sora", sans-serif;
-    font-weight: 600;
-    padding: 10px;
-    margin: 0 80px;
-    font-size: 50px; /* Add margin between each h2 element */
-    font-style: normal;
-}
 
 #features {
     margin: 100px;
@@ -104,4 +82,3 @@ button.signup:hover {
     flex: 0 0 auto;
     width: 33.333333%;
   }
-  

@@ -1,11 +1,10 @@
-/* main.css */
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400&display=swap');
 
 body {
     font-family: "Sora", sans-serif;
-    background-color: #f0f0f0;
+    background-color: #000000aa;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -50,9 +49,11 @@ button.signup:hover {
 }
 
 nav {
-    background-color: rgb(228, 228, 228);
+    height: 60px; /* Set the height of the nav bar */
+    background-color:None;
     overflow: hidden;
 }
+
 
 nav a {
     float: left;
@@ -64,8 +65,13 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: #000000aa;
+    color: white;
+}
+nav i {
+    float: left; /* Align the <i> tag to the left */
+    padding: 5px 0 5px 15px; /* Top, right, bottom, left padding */
+    color: white;
 }
 
 /* form.css */
@@ -94,6 +100,8 @@ input {
     padding: 8px;
     margin-bottom: 16px;
     box-sizing: border-box;
+    border: #333333c9 solid 0.1px;
+    border-radius: 5px;
 }
 
 .login button, .navi button {
@@ -146,3 +154,27 @@ input {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+.sign-up {
+    max-width: 500px; /* Increase form width */
+}
+.login button,
+.sign-up button {
+    background-color: #4f46e5; /* Change button color */
+    box-shadow: 0px 4px 10px rgba(79, 70, 229, 0.5); /* Change button shadow color */
+    border-radius: 11px; /* Set border radius to 40% */
+}
+
+.name-inputs, .username-email-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px; /* Add some space between input rows */
+}
+
+.input-wrapper {
+    width: 48%; /* Each input takes up 48% of the width */
+}
+.sign-up button {
+    width: 50%;
+    margin: 0 auto; /* Center the button horizontally */
+}
+
