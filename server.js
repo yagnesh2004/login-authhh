@@ -1,4 +1,3 @@
-// server.js
 const nodemailer = require('nodemailer');
 const express = require('express');
 const session = require('express-session');
@@ -6,14 +5,55 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const { Pool } = require('pg');
-const axios = require('axios')
+const axios = require('axios');
+const moment = require('moment-timezone');
+
 const app = express();
 const port = 3000;
-
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
+const API_URL = "http://localhost:4000";
+let posts = [
+    {
+      id: 1,
+      title: "How Sora (actually) works",
+      content:
+        "Sora builds on past research in DALL·E and GPT models. It uses the recaptioning technique from DALL·E 3, which involves generating highly descriptive captions for the visual training data. As a result, the model is able to follow the user’s text instructions in the generated video more faithfully.",
+      author: "Alex Thompson",
+      date: "2023-08-01T10:00:00Z",
+    },
+    {
+      id: 2,
+      title: "The Impact of Artificial Intelligence on Modern Businesses",
+      content:
+        "Artificial Intelligence (AI) is no longer a concept of the future. It's very much a part of our present, reshaping industries and enhancing the capabilities of existing systems. From automating routine tasks to offering intelligent insights, AI is proving to be a boon for businesses. With advancements in machine learning and deep learning, businesses can now address previously insurmountable problems and tap into new opportunities.",
+      author: "Mia Williams",
+      date: "2023-08-05T14:30:00Z",
+    },
+    {
+      id: 3,
+      title: "Sustainable Living: Tips for an Eco-Friendly Lifestyle",
+      content:
+        "Sustainability is more than just a buzzword; it's a way of life. As the effects of climate change become more pronounced, there's a growing realization about the need to live sustainably. From reducing waste and conserving energy to supporting eco-friendly products, there are numerous ways we can make our daily lives more environmentally friendly. This post will explore practical tips and habits that can make a significant difference.",
+      author: "Samuel Green",
+      date: "2023-08-10T09:15:00Z",
+    },
+  ];
+  
+  let lastId = 3;
+  
+// Configure session middleware
 app.use(session({ secret: 'your_secret_key', resave: true, saveUninitialized: true }));
 
+// Configure body parser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Configure static file serving middleware
+app.use(express.static('public'));
+
+// Set the view engine to use EJS
+app.set('view engine', 'ejs');
+
+// Create a PostgreSQL pool
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
@@ -21,16 +61,15 @@ const pool = new Pool({
     password: 'Yagnesh@123',
     port: 5432,
 });
-// Create a transporter with your SMTP settings
+
+// Create a nodemailer transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'thealgorithm2000@gmail.com', // Admin email
-        pass: '0b111110100002000' // Admin email password
+        user: 'thealgorithm2000@gmail.com',
+        pass: '0b111110100002000'
     }
 });
-
-app.set('view engine', 'ejs');
 
 // Middleware to check for authentication
 const requireAuth = (req, res, next) => {
@@ -40,50 +79,49 @@ const requireAuth = (req, res, next) => {
     res.redirect('/login');
 };
 
-// Render the home page
+// Function to get the user's country
+function getUserCountry() {
+    // Logic to determine user's country based on their IP address or any other method
+    return 'US'; // Example country code for demonstration
+}
+
+// Route to render the home page
 app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
-// Render the signup form
-// GET route for displaying the signup form
+// Route to render the signup form
 app.get('/signup', (req, res) => {
     res.render('signup.ejs');
 });
 
-// POST route for handling signup form submission
+// Route to handle signup form submission
 app.post('/signup', async (req, res) => {
     try {
-        // Data Validation
         const { username, password, email, firstname, lastname } = req.body;
 
         if (!username || !password || !email || !firstname || !lastname) {
             return res.render('signup.ejs', { error: 'All fields are required', username, email, firstname, lastname });
         }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Check if username is unique
         const existingUsername = await pool.query('SELECT * FROM userss WHERE username = $1', [username]);
         if (existingUsername.rows.length > 0) {
             return res.render('signup.ejs', { error: 'Username already exists', username, email, firstname, lastname });
         }
 
-        // Check if email is unique
         const existingEmail = await pool.query('SELECT * FROM userss WHERE email = $1', [email]);
         if (existingEmail.rows.length > 0) {
             return res.render('signup.ejs', { error: 'Email already exists', username, email, firstname, lastname });
         }
 
-        // Database Insertion
-        const currentTime = new Date(); // Get the current time
+        const currentTime = new Date();
         const result = await pool.query('INSERT INTO userss (username, password, email, first_name, last_name, time) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [username, hashedPassword, email, firstname, lastname, currentTime]);
 
-        // Sending email notification
         const mailOptions = {
-            from: 'thealgorithm2000@gmail.com', // Admin email
-            to: email, // User's email
+            from: 'thealgorithm2000@gmail.com',
+            to: email,
             subject: 'Welcome to the Dork Platform!',
             html: `<p>Hello ${firstname},</p><p>Thank you for registering with us! We're excited to have you on board.</p><p>Here's a greeting card to welcome you to the Dork Platform:</p><p><img src="https://example.com/greeting_card.jpg" alt="Greeting Card" style="max-width: 100%; height: auto;"></p><p>We hope you enjoy your time on our platform!</p>`
         };
@@ -96,7 +134,6 @@ app.post('/signup', async (req, res) => {
             }
         });
 
-        // Redirect on Success
         res.redirect('/login');
     } catch (error) {
         console.error(error);
@@ -104,17 +141,12 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-
-
-
-// Render the login form
+// Route to render the login form
 app.get('/login', (req, res) => {
     res.render('login.ejs');
 });
 
-// Handle login form submission
-const moment = require('moment-timezone'); // Import the moment-timezone library
-
+// Route to handle login form submission
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -124,17 +156,13 @@ app.post('/login', async (req, res) => {
         if (result.rows.length > 0) {
             const match = await bcrypt.compare(password, result.rows[0].password);
             if (match) {
-                // Store the username in the session
                 req.session.userId = result.rows[0].id;
                 req.session.username = result.rows[0].username;
 
-                const loginTime = moment().utc().format("X"); // Get current time in UTC format
-                const country = getUserCountry(); // Get user's country (function to be defined)
+                const loginTime = moment().utc().format("X");
+                const country = getUserCountry();
 
-                // Insert login data into login_data table
-                const insertQuery = `
-                    INSERT INTO login_data (user_name, login_time, country)
-                    VALUES ($1, $2, $3);`;
+                const insertQuery = `INSERT INTO login_data (user_name, login_time, country) VALUES ($1, $2, $3);`;
                 await pool.query(insertQuery, [username, loginTime, country]);
 
                 console.log(username + " Logged in");
@@ -152,23 +180,13 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
-// Function to get the user's country (You need to implement this function)
-function getUserCountry() {
-    // Logic to determine user's country based on their IP address or any other method
-    // Return the country code (e.g., 'US', 'IN', 'RU', etc.)
-    return 'US'; // Example country code for demonstration
-}
-
-
 // Protected route
-// Assuming you have something like this in your server code
 app.get('/analyzer', (req, res) => {
     const loggedInUser = req.session.username;
-    res.render('analyzer',{ uname: loggedInUser});
+    res.render('analyzer', { uname: loggedInUser });
 });
 
-// POST request for the "/analyzer" endpoint
+// Route to handle POST request for the "/analyzer" endpoint
 app.post('/analyzer', async (req, res) => {
     try {
         const loggedInUser = req.session.username;
@@ -190,30 +208,29 @@ app.post('/analyzer', async (req, res) => {
     }
 });
 
+// Route to render the blog page
+app.get('/blog', async (req, res) => {
+    let loggedInUser; // Declare loggedInUser outside the try-catch block
 
+    try {
+        loggedInUser = req.session.username;
 
-
-app.get('/home', (req, res) => {
-  
-    res.redirect('/');
-    
+        const response = await axios.get(`${API_URL}/posts`);
+        res.render("blog", { posts: response.data,uname: loggedInUser,
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching posts" });
+    }
 });
-app.get('/sheet', (req, res) => {
-    const loggedInUser = req.session.username;
-    // Render sheet.ejs
-    res.render('sheet', {
-        uname: loggedInUser,});
-});
+
+// Route to render the explore page
 app.get('/explore', (req, res) => {
-    const loggedInUser = req.session.username;
-    // Render sheet.ejs
-    res.render('opportunities', {
-        uname: loggedInUser,});
+    res.render('opportunities', { uname: req.session.username });
 });
-// Handle logout
+
+// Route to handle logout
 app.get('/logout', (req, res) => {
-    const loggedInUser = req.session.username;
-    console.log(loggedInUser+ " Logged out");
+    console.log(req.session.username + " Logged out");
     req.session.destroy((err) => {
         if (err) {
             console.error('Error destroying session:', err);
@@ -221,12 +238,8 @@ app.get('/logout', (req, res) => {
         res.redirect('/login');
     });
 });
-// Assuming you have something like this in your server code
 
-
-        
-
-
+// Route to render the dashboard
 app.get('/dashboard', async (req, res) => {
     let user;
     let loggedInUser; // Declare loggedInUser outside the try-catch block
@@ -334,46 +347,119 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
                 storedRating: null,
                 error: 'Error fetching problems'
             });
+
         }
     }
 });
-
-
-
-
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
-
-
-
-// Define the route handler
-// Define the route handler
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+// Route to render the profile page
 app.get('/profile', async (req, res) => {
     let loggedInUser;
     try {
-        // Get the username of the logged-in user from the session
         loggedInUser = req.session.username;
 
-        // Query to fetch user information for the logged-in user
         const query = 'SELECT username, first_name, last_name, user_image, email FROM userss WHERE username = $1';
-
-        // Execute the query with the username of the logged-in user
         const { rows } = await pool.query(query, [loggedInUser]);
 
-        // If user details are found, render the profile page with the user information
         if (rows.length > 0) {
             console.log('Fetched user information:', rows[0]);
-            res.render('profile', { user: rows[0], uname: loggedInUser }); // Pass both user and uname
+            res.render('profile', { user: rows[0], uname: loggedInUser });
         } else {
-            // If user details are not found, render an error page
             console.error('User not found');
             res.status(404).send('User not found');
         }
     } catch (error) {
         console.error('Error fetching user information:', error);
-        // Handle error rendering profile page
         res.status(500).send('Error fetching user information');
     }
+});
+app.get("/new", (req, res) => {
+    res.render("modify.ejs", { heading: "New Post", submit: "Create Post" });
+  });
+  
+  // GET all posts
+  app.get("/posts", (req, res) => {
+    console.log(posts);
+    res.json(posts);
+  });
+  
+  // GET a specific post by id
+  app.get("/posts/:id", (req, res) => {
+    const post = posts.find((p) => p.id === parseInt(req.params.id));
+    if (!post) return res.status(404).json({ message: "Post not found" });
+    res.json(post);
+  });
+  app.post("/api/posts", async (req, res) => {
+    try {
+      const response = await axios.post(`${API_URL}/posts`, req.body);
+      console.log(response.data);
+      res.redirect("/blog");
+    } catch (error) {
+      res.status(500).json({ message: "Error creating post" });
+    }
+  });
+  
+  // Partially update a post
+  app.post("/api/posts/:id", async (req, res) => {
+    console.log("called");
+    try {
+      const response = await axios.patch(
+        `${API_URL}/posts/${req.params.id}`,
+        req.body
+      );
+      console.log(response.data);
+      res.redirect("/blog");
+    } catch (error) {
+      res.status(500).json({ message: "Error updating post" });
+    }
+  });
+  
+  // Delete a post
+  app.get("/api/posts/delete/:id", async (req, res) => {
+    try {
+      await axios.delete(`${API_URL}/posts/${req.params.id}`);
+      res.redirect("/blog");
+    } catch (error) {
+      res.status(500).json({ message: "Error deleting post" });
+    }
+  });
+  // POST a new post
+  app.post("/posts", (req, res) => {
+    const newId = lastId += 1;
+    const post = {
+      id: newId,
+      title: req.body.title,
+      content: req.body.content,
+      author: req.body.author,
+      date: new Date(),
+    };
+    lastId = newId;
+    posts.push(post);
+    res.status(201).json(post);
+  });
+  
+  // PATCH a post when you just want to update one parameter
+  app.patch("/posts/:id", (req, res) => {
+    const post = posts.find((p) => p.id === parseInt(req.params.id));
+    if (!post) return res.status(404).json({ message: "Post not found" });
+  
+    if (req.body.title) post.title = req.body.title;
+    if (req.body.content) post.content = req.body.content;
+    if (req.body.author) post.author = req.body.author;
+  
+    res.json(post);
+  });
+  
+  // DELETE a specific post by providing the post id
+  app.delete("/posts/:id", (req, res) => {
+    const index = posts.findIndex((p) => p.id === parseInt(req.params.id));
+    if (index === -1) return res.status(404).json({ message: "Post not found" });
+  
+    posts.splice(index, 1);
+    res.json({ message: "Post deleted" });
+  });
+
+  
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });
