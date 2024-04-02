@@ -2,45 +2,359 @@
 <html lang="en">
 
 <head>
-    <!-- Your head content here -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
-    <title>Sheet</title>
-    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
-
+    <title>Practice</title>
+    <link id="theme-style" rel="stylesheet" type="text/css" href="/css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
 </head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
+    /* Reset some default browser styles */
+    body,
+    h1,
+    h2,
+    p,
+    ul,
+    li,
+    form,
+    input,
+    textarea,
+    a {
+        margin: 0;
+        padding: 0;
+        border: none;
+        font-family: "Arial", sans-serif;
+    }
+
+    body {
+        background-color: #f7f9fc;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1300px;
+        margin: 50px auto;
+        background-color: #111111;
+        padding: 100px 40px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #444;
+        text-align: center;
+    }
+
+    h2 {
+        font-family: 'Sora', sans-serif;
+        font-weight: 500;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #f0f0f0;
+    }
+    .container a{
+        background-color: #4f46e5;
+        color:rgb(214, 214, 214);
+        border-radius: 15px  ; }
+    
+        .container a:hover{
+        background-color: #4c44e7e1;
+        color: rgb(255, 255, 255);
+        border-radius: 15px ;  }
+
+    p,
+    input,
+    textarea {
+        font-size: 20px;
+        color: #cbcbcb;
+        margin-bottom: 20px;
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+    }
+
+    small {
+        display: block;
+        margin-bottom: 20px;
+        color: #888;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1em;
+        outline: none;
+        transition: border 0.3s;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #007bff;
+    }
+
+    a,
+    button {
+        text-decoration: none;
+        color: #fff;
+        padding: 10px;
+        font-size: 1em;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button.full-width {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+
+    a,
+    button:hover {
+        background-color: #202222;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+
+    li {
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    li:last-child {
+        border-bottom: none;
+    }
+
+    a.delete {
+        background-color: #e74c3c;
+    }
+
+    a.delete:hover {
+        background-color: #c0392b;
+    }
+
+    #newPostBtn {
+        margin: 20px 0;
+        background-color: #2ecc71;
+        padding: 10px 15px;
+        font-size: 1em;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border: none;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    #newPostBtn:hover {
+        background-color: #27ae60;
+    }
+
+    nav {
+        background-color: #202222;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        color: #e1e1df;
+        position: relative;
+    }
+
+    nav a {
+        font-size: 16px;
+        color: #c2c4c5;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        position: relative;
+    }
+
+    nav a::after {
+        content: "";
+        position: absolute;
+        bottom: -3px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background-color: #ffffff;
+        transition: width 0.25s ease-in-out;
+        cursor: pointer;
+    }
+
+    nav a:hover::after {
+        width: 80%;
+    }
+
+    nav a:hover {
+        border-radius: 15px;
+        background-color: #333333;
+        color: #ffffff;
+        transition: all 0.3s;
+    }
+
+    nav #theme-toggle i.far {
+        background-color: None;
+    }
+
+    #theme-toggle i.far {
+        transition: color 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease;
+    }
+
+    #theme-toggle:hover i.far {
+        border: 1px solid #3d4259;
+        color: #c291e2;
+        transform: rotate(30deg);
+        transition: color 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease;
+    }
+
+    .left-links {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+    }
+
+    .left-links i,
+    .left-links .logo {
+        font-size: 30px;
+        margin-right: 10px;
+    }
+
+    .left-links .logo {
+        font-weight: 600;
+    }
+
+    .center-links {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .right-links {
+        display: flex;
+        align-items: center;
+    }
+
+    .right-links a {
+        margin-left: 10px;
+    }
+
+    body {
+        background-color: #16181c;
+        font-family: "Sora", sans-serif;
+        color: #747777;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header Styles */
+        h1 {
+    font-size: 80px;
+    padding: 50px;
+    padding-bottom: 40px;
+
+    text-align: center;
+    color: #e1e1df;
+    margin-top: 10vh; /* Increase margin-top for more padding */
+    transform: translateY(-50%);
+}
+
+    
+
+    /* Adjust image size and border */
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 0 auto;
+        width: 80%;
+    }
+    .card {
+    border: 1px solid grey;
+    border-radius: 30px;
+    margin: 30px 10px; /* Increase margin to add space between cards */
+    padding: 20px;
+    width: 20%; /* Adjust width to 20% */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.5s, color 0.5s, border-color 0.5s;
+}
+
+
+    .card:hover {
+        background-color: #252727d1;
+        color: white;
+        border-color: white;
+    }
+
+    .card img {
+        width: 100px; /* Adjust image width */
+        height: 70px; /* Adjust image height */
+        margin-bottom: 10px;
+    }
+</style>
 
 <body>
     <div class="navi">
         <nav style="background-color: #202222;">
             <div class="left-links">
-               
-                <i class="fa-brands fa-squarespace" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
+                <i class="fa-brands fa-squarespace"
+                    style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                </i>
+                <div class="logo"
+                    style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Dork</div>
             </div>
             <div class="center-links">
-                <a href="/dashboard">Practice</a>
-                <a href="/analyzer"  >Analyze</a>
-                <a href="/sheet" >Sheet</a>
-                <a href="/explore" style="background-color:#333333;color: #ffffff;border-radius: 15px;">Explore</a>
+                <a href="/guide">Guide</a>
 
-                <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+                <a href="/dashboard">Practice</a>
+                <a href="/analyzer">Analyze</a>
+                <a href="/blog">Blog</a>
+                <a href="/explore" style="background-color:#333333;color: #ffffff;border-radius: 15px;">Explore</a>
             </div>
             <div class="right-links">
-                <a href="/profile" rel="noopener noreferrer" ><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
-                <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <a href="#" id="theme-toggle" onclick="toggleTheme()"><i class="far fa-sun"></i></a>
+                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i> <i
+                        class="fa-solid fa-angle-down"></i></a>
+                <a href="/logout" class="logout-container">
+                    <i class="fa-solid fa-right-from-bracket" title="Logout"></i>
+                </a>
             </div>
         </nav>
     </div>
-     
-        
-    <div class="default-data">
-        <i class="fa-solid fa-code-merge"></i>        
-        <p>Feature under development.  </p>
-        <p> Beta release, March 27, 2024.</p>
+    <h1>Fellowship</h1>
+    <div class="container">
+        <% fello.forEach(item => { %>
+        <div class="card">
+            <img src="<%= item.image %>" alt="<%= item.title %> Image">
+            <h2><%= item.title %></h2>
+            <p><a href="<%= item.application %>" target="_blank">Application Link</a></p>
+            <p ><a href="<%= item.read %>" target="_blank">Read More</a></p>
+        </div>
+        <% }) %>
     </div>
-
-  
-
+    
 </body>
 
 </html>

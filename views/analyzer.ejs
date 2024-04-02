@@ -6,34 +6,40 @@
     <script src="https://kit.fontawesome.com/8045a273a1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
     <title>Analyze</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 </head>
 
 <body>
     <div class="navi">
-        <nav style="background-color: #202222;">
+        <nav style="    background-color: #202222;    ">
             <div class="left-links">
-               
                 <i class="fa-brands fa-squarespace" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
                 <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
             </div>
             <div class="center-links">
-                <a href="/dashboard">Practice</a>
-                <a href="/analyzer"  style="background-color:#333333;color: #ffffff;border-radius: 15px;">Analyze</a>
-                <a href="/sheet">Sheet</a>
-                <a href="/explore">Explore</a>
+                <a href="/guide" >Guide</a>
 
-                <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
+                <a href="/dashboard"  >Practice</a>
+                <a href="/analyzer"style="background-color:#333333;color: #ffffff;border-radius: 15px;">Analyze</a>
+                <a href="/blog">Blog</a>
+                <a href="/explore">Explore</a>
+        
             </div>
             <div class="right-links">
-                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
-                <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <!-- Replace the sun logo with the moon logo -->
+                <a href="#" id="theme-toggle" onclick="toggleTheme()"><i class="far fa-sun"></i></a>
+                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>   <i class="fa-solid fa-angle-down"></i></a>
+                <a href="/logout" class="logout-container">
+                    <i class="fa-solid fa-right-from-bracket" title="Logout"></i>
+                </a>
             </div>
         </nav>
     </div>
     <!-- Include the form with the input box -->
     <form action="/analyzer" method="post" style="display: flex; align-items: center;">
         <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle" required
-            style="width: 40%; padding: 10px; margin-right: 10px; border: 1px solid #333; border-radius: 5px;">
+            style="width: 40%; padding: 20px; margin-right: 10px; border: 1px solid #333; border-radius:5px;">
         <button type="submit" style="width: 20%; padding: 10px 20px; font-size: 16px; background-color: #1fb8cd; color: #1a2e31; border: none; border-radius: 5px; cursor: pointer;"><i class="fa-solid fa-chart-simple"></i></button>
     </form>
     
@@ -74,7 +80,8 @@
                 }
 
                 if (locals.user) { %>
-        <h2>User Details</h2>
+           <canvas id="myChart" style="width:100%;max-width:900px; margin:auto; display:block;"></canvas>
+
         <table>
             <tbody>
                 <tr>
@@ -133,7 +140,67 @@
         </div>
         <% } %>
     </div>
+    <body>
+        <script>
+            
+const xValues = <%= JSON.stringify(locals.originalTimeFramesList) %>;
+const yValues = <%= JSON.stringify(locals.newRatings) %>;
+
+const chartData = {
+    type: "line",
+    data: {
+        labels: xValues,
+        datasets: [{
+            label: 'Performance', // This will appear in the legend
+            fill: true,
+            lineTension: 1,
+            backgroundColor: 'rgba(0, 128, 0, 0.5)', // Semi-transparent green for the filled area
+            borderColor: "#57f757", // Existing green color for the line
+            data: yValues
+        }]
+    },
+    options: {
+        legend: {
+            display: true
+        },
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Rating Range'
+                },
+                ticks: {
+                    min: Math.min(...yValues),
+                    max: Math.max(...yValues)
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Contest Participation in  Unix timestamps'
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'Users Scatterplot'
+        }
+    }
+};
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, chartData);
+
+</script>
 
 </body>
+
+
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+
 
 </html>

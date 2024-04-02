@@ -18,6 +18,28 @@
             max-width: 100%;
             max-height: 100%;
         }
+        .image-container i{
+            size: 100px;
+        }
+        table {
+    width: 800px; /* Reduce the width of the table */
+    border-radius: 50px; /* Apply border radius to the table */
+}
+
+tr {
+    background-color: rgb(67, 0, 0); /* Change background color of curved rows to red */
+    border-radius: 0 50px 50px 0; /* Apply border radius to the left side of table rows */
+}
+
+td {
+    border-radius: 50px; /* Apply border radius to table cells */
+    padding: 10px; /* Add padding for better visual appearance */
+    font-size: 20px; /* Change the font size of table data */
+    color: #f2f2f2; /* Change the font color of table data */
+}
+
+
+
     </style>
 </head>
 
@@ -30,12 +52,13 @@
                 <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
             </div>
             <div class="center-links">
+                <a href="/guide" >Guide</a>
+
                 <a href="/dashboard">Practice</a>
                 <a href="/analyzer"  >Analyze</a>
-                <a href="#sheet">Sheet</a>
+                <a href="/blog">Blog</a>
                 <a href="/explore">Explore</a>
 
-                <a href="#theme">Light theme <i class="fa-solid fa-circle-half-stroke"></i></a>
             </div>
             <div class="right-links">
                 <a href="/profile" rel="noopener noreferrer" style="background-color:#333333;color: #ffffff;border-radius: 15px;"><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
@@ -45,10 +68,12 @@
     </div>
 
     <div>
-        <h2>User Profile</h2>
-        <div class="image-container">
-            <img src="<%= user.user_image %>" alt="User Image">
+        <h2><p style="text-align: center;">User Profile</p>
+        </h2>
+        <div class="image-container" style="font-size: 50px; background-color: grey; border-radius: 100px; justify-content: center; display: flex; align-items: center; padding: 10px;">
+            <i class="fa-regular fa-user" style="color: black;"></i>
         </div>
+        
         <table>
             <tbody>
                 <tr>

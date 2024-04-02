@@ -284,35 +284,14 @@ h1 {
         <div class="right-links">
             <!-- Replace the sun logo with the moon logo -->
             <a href="#" id="theme-toggle" onclick="toggleTheme()"><i class="far fa-sun"></i></a>
-            <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>  <%= uname %> <i class="fa-solid fa-angle-down"></i></a>
+            <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i>  <i class="fa-solid fa-angle-down"></i></a>
             <a href="/logout" class="logout-container">
                 <i class="fa-solid fa-right-from-bracket" title="Logout"></i>
             </a>
         </div>
     </nav>
 </div>
-  <div class="container">
-    <h1 style="padding-top: 30px; font-size: 50px;">Latest updates  <i class="fa-regular fa-paper-plane"></i></h1>
-    <a id="newPostBtn" href="/new">New Post</a>
-    <ul id="postsList" >
-      <% posts.forEach(post=> { %>
-        <li style="background-color: #212121c5; border-radius: 30px; border-color: #333333c5; padding: 20px 30px; margin: 20px 20px;">
-          <h2>
-            <%=post.title%>
-          </h2>
-          <small>
-            <%=post.date %>
-          </small>
-          <p>
-            <%=post.content%>
-          </p>
-          <small>By: <%=post.author%> </small>
-          <a class="edit" href="/edit/<%= post.id %>">Edit</a>
-          <a class="delete" href="/api/posts/delete/<%= post.id %>">Delete</a>
-        </li>
-        <% }); %>
-    </ul>
-  </div>
+<h3>Data admin</h3>
 
 </body>
 

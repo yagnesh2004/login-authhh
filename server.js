@@ -14,7 +14,7 @@ const API_URL = "http://localhost:4000";
 let posts = [
     {
       id: 1,
-      title: "How Sora (actually) works",
+      title: "hbkghhjuk",
       content:
         "Sora builds on past research in DALL·E and GPT models. It uses the recaptioning technique from DALL·E 3, which involves generating highly descriptive captions for the visual training data. As a result, the model is able to follow the user’s text instructions in the generated video more faithfully.",
       author: "Alex Thompson",
@@ -94,7 +94,9 @@ app.get('/', (req, res) => {
 app.get('/signup', (req, res) => {
     res.render('signup.ejs');
 });
-
+app.get('/data', (req, res) => {
+    res.render('data.ejs');
+});
 // Route to handle signup form submission
 app.post('/signup', async (req, res) => {
     try {
@@ -145,6 +147,20 @@ app.post('/signup', async (req, res) => {
 app.get('/login', (req, res) => {
     res.render('login.ejs');
 });
+// Route to render the guide page
+app.get('/guide', (req, res) => {
+    try {
+        // Generate the uname variable
+        const uname = req.session.username;
+
+        // Logic to render the guide page
+        res.render('guide.ejs', { uname: uname });
+    } catch (error) {
+        console.error('Error rendering guide page:', error);
+        res.status(500).render('error.ejs', { error: 'An error occurred while rendering the guide page' });
+    }
+});
+
 
 // Route to handle login form submission
 app.post('/login', async (req, res) => {
@@ -167,7 +183,7 @@ app.post('/login', async (req, res) => {
 
                 console.log(username + " Logged in");
 
-                res.redirect('/dashboard');
+                res.redirect('/guide');
             } else {
                 res.render('login.ejs', { error: 'Invalid username or password' });
             }
@@ -187,6 +203,7 @@ app.get('/analyzer', (req, res) => {
 });
 
 // Route to handle POST request for the "/analyzer" endpoint
+// Route to handle POST request for the "/analyzer" endpoint
 app.post('/analyzer', async (req, res) => {
     try {
         const loggedInUser = req.session.username;
@@ -195,18 +212,50 @@ app.post('/analyzer', async (req, res) => {
         console.log(loggedInUser);
 
         const apiUrl = `https://codeforces.com/api/user.info?handles=${codeforcesHandle}&checkHistoricHandles=false`;
+        const apiGraph = `https://codeforces.com/api/user.rating?handle=${codeforcesHandle}`;
+        const responseGraph = await axios.get(apiGraph);
+
         const response = await axios.get(apiUrl);
         const user = response.data.result[0];
         console.log(user);
 
-        res.render('analyzer', { uname: loggedInUser, user, error: null });
+        // Extracting new ratings from the user's rating history
+        const newRatings = responseGraph.data.result.map(entry => entry.newRating);
+
+        // Extracting rating updates
+        const ratingUpdates = responseGraph.data.result.map(entry => {
+            return {
+                updateTime: new Date(entry.ratingUpdateTimeSeconds * 1000).toLocaleString(), // Human-readable time
+                originalTimeFrame: entry.ratingUpdateTimeSeconds // Original Unix epoch time
+            };
+        });
+        // Function to extract original time frames from ratingUpdates array
+function getOriginalTimeFramesList(ratingUpdates) {
+    return ratingUpdates.map(update => update.originalTimeFrame);
+}
+function getupdatedDta(ratingUpdates) {
+    return ratingUpdates.map(update => update.updateTime);
+}
+// Usage example:
+const updatedTime=getupdatedDta(ratingUpdates);
+const originalTimeFramesList = getOriginalTimeFramesList(ratingUpdates);
+console.log(originalTimeFramesList);
+
+        console.log("amsbdfjsbdfkjsadbfhj")
+
+        // List of rating marks
+        const ratingMarks = [0,1200, 1400, 1600, 1900, 2100, 2300, 2400, 2600, 3000];
+
+        res.render('analyzer', { uname: loggedInUser, user, newRatings, ratingMarks,updatedTime:updatedTime,originalTimeFramesList: originalTimeFramesList,ratingUpdates, error: null });
 
     } catch (error) {
         console.log("Error fetching user details:", error);
         const loggedInUser = req.session.username;
-        res.render('analyzer', { uname: loggedInUser, user: null, error: 'Error fetching user details' });
+        res.render('analyzer', { uname: loggedInUser, user: null, newRatings: null, ratingMarks: null,originalTimeFrame: null, ratingUpdates: null, error: 'Error fetching user details' });
     }
 });
+
+
 
 // Route to render the blog page
 app.get('/blog', async (req, res) => {
@@ -224,8 +273,63 @@ app.get('/blog', async (req, res) => {
 });
 
 // Route to render the explore page
+const fello = [
+    {
+        id: 1,
+        title: "LFX Mentorship Program",
+        image: "/images/lfx.jpg",
+        application: "https://mentorship.lfx.linuxfoundation.org/#projects_all",
+        read: "https://lfx.linuxfoundation.org/tools/mentorship/",
+    },
+    {
+        id: 2,
+        title: "MLH Fellowship",
+        image: "/images/mlh.jpg",
+        application: "https://www.tfaforms.com/4956119",
+        read: "https://lfx.linuxfoundation.org/tools/mentorship/",
+    },
+    {
+        id: 3,
+        title: "CNCF Mentoring",
+        image: "/images/cncf.jpg",
+        application: "https://github.com/cncf/mentoring",
+        read: "https://www.cncf.io/",
+    },
+    {
+        id: 4,
+        title: "LFN Mentorship Program",
+        image: "/images/lfn.png",
+        application: "https://wiki.lfnetworking.org/display/LN/LFN+Mentorship+Program#LFNMentorshipProgram-MenteeStipends",
+        read: "https://lfnetworking.org/",
+    },
+    {
+        id: 5,
+        title: "Y Combinator summer 2024",
+        image: "/images/yc.png",
+        application: "https://www.ycombinator.com/apply",
+        read: "https://www.ycombinator.com/",
+    },
+    {
+        id: 6,
+        title: "Thiel Fellowship",
+        image: "/images/theil.jpg",
+        application: "https://thielfellowship.org/apply",
+        read: "https://thielfellowship.org/",
+    },
+    {
+        id: 7,
+        title: "Naropa Fellowship ",
+        image: "/images/NAROPA.png",
+        application: "https://www.naropafellowship.org/about-the-fellowship.html",
+        read: "https://www.naropafellowship.org/apply.html",
+    },
+];
+
+
+app.set('view engine', 'ejs');
+
 app.get('/explore', (req, res) => {
-    res.render('opportunities', { uname: req.session.username });
+    res.render('opportunities', { uname: req.session.username, fello: fello });
 });
 
 // Route to handle logout
@@ -398,6 +502,32 @@ app.get("/new", (req, res) => {
       res.status(500).json({ message: "Error creating post" });
     }
   });
+  // Route to render the edit post page
+app.get("/edit/:id(\\d+)", async (req, res) => {
+    try {
+        const postId = parseInt(req.params.id); // Parse the ID as an integer
+        if (isNaN(postId)) {
+            // If the ID is not a number, return a 404 error
+            return res.status(404).json({ message: "Invalid post ID" });
+        }
+        
+        // Fetch the post data from the API or database using the postId
+        const response = await axios.get(`${API_URL}/posts/${postId}`);
+        console.log(response.data);
+        
+        // Render the modify.ejs template with the post data
+        res.render("modify.ejs", {
+            heading: "Edit Post",
+            submit: "Update Post",
+            post: response.data,
+        });
+    } catch (error) {
+        // If an error occurs during the process, return a 500 error
+        console.error(error);
+        res.status(500).json({ message: "Error fetching post" });
+    }
+});
+
   
   // Partially update a post
   app.post("/api/posts/:id", async (req, res) => {
@@ -408,7 +538,7 @@ app.get("/new", (req, res) => {
         req.body
       );
       console.log(response.data);
-      res.redirect("/blog");
+      res.redirect("/blog");Z
     } catch (error) {
       res.status(500).json({ message: "Error updating post" });
     }
