@@ -41,6 +41,7 @@ app.get("/edit/:id", async (req, res) => {
   }
 });
 
+
 // Create a new post
 app.post("/api/posts", async (req, res) => {
   try {
