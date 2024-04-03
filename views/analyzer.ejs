@@ -9,23 +9,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
     <style>
+        .container{
+            border:  3px solid #202222b2;
+            border-radius: 10px;
+            margin: 20px;
+        }
         table {
+            border-radius:10px ;
             background-color: #0d1117;
-            border: 2px solid #007bff;
-            width: 900px;
-            border-radius: 40px;
+            border: 3px solid #202222b2;
+            width: 600px;
+            padding: 10px;
+
+            
         }
 
         table td {
             color: #e3ebf1;
         }
 th,td{
-    border: 25px solid #202222b2;
+    border-radius: 10px;
+    border: 3px solid #202222b2;
+    padding: 7px;
+    font-size: 15px;
 
 }
+td{
+    height: 10px;
+}
         table img {
-            height: 170px;
-            width: 150px;
+            height: 100px;
+            width: 100px;
         }
     /* Style for the form */
     form {
@@ -42,6 +56,36 @@ th,td{
         border: 1px solid #333;
         border-radius: 5px;
     }
+    .container {
+    display: flex; /* Enables flexbox layout */
+    justify-content: space-between; /* Spreads out the child elements evenly */
+    align-items: flex-start; /* Aligns the items at the start of the container vertically */
+    padding: 20px; /* Adds some space inside the container */
+    gap: 20px; /* Optional: adds space between the flex items */
+}
+
+.left, .right {
+    flex: 1; /* Makes each side take up equal space */
+    padding: 10px; /* Adds padding inside each side */
+    display: flex; /* Enables flexbox inside each section */
+    flex-direction: column; /* Aligns children vertically */
+    justify-content: center; /* Centers items vertically */
+    align-items: center; /* Centers items horizontally */
+    gap: 10px; /* Adds space between the items */
+}
+
+/* Additional CSS to make it look better and responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stacks the flex items vertically on smaller screens */
+        gap: 10px; /* Adjusts the gap for smaller screens */
+    }
+
+    .left, .right {
+        width: 100%; /* Ensures that each section takes full width on smaller screens */
+    }
+}
+
 
     /* Style for the submit button */
     button[type="submit"] {
@@ -79,7 +123,7 @@ th,td{
             <div class="right-links">
                 <!-- Replace the sun logo with the moon logo -->
                 <a href="#" id="theme-toggle" onclick="toggleTheme()"><i class="far fa-sun"></i></a>
-                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"></i> <i
+                <a href="/profile" rel="noopener noreferrer"><i class="fa-solid fa-user"> <%= uname %></i> <i
                         class="fa-solid fa-angle-down"></i></a>
                 <a href="/logout" class="logout-container">
                     <i class="fa-solid fa-right-from-bracket" title="Logout"></i>
@@ -92,105 +136,120 @@ th,td{
         <input type="text" id="codeforcesHandle" placeholder="Enter Codeforces handle" name="codeforcesHandle"
             required style="width: 80%; padding: 20px; margin-right: 10px; border: 1px solid #333; border-radius: 5px;">
         <button type="submit"
-            style="width: 20%; padding: 10px 20px; font-size: 16px; background-color: #8957e5; color: white; border: none; border-radius: 5px; cursor: pointer;"><i
+            style="width: 20%; padding: 10px 20px; font-size: 16px; background-color: #8957e5; color: black; border: none; border-radius: 5px; cursor: pointer;"><i
                 class="fa-solid fa-chart-simple"></i></button>
     </form>
-
-    <div class="user-details">
-        <%
-            try {
-                function calculateTimeDifference(timeSeconds) {
-                    const currentTime = Math.floor(Date.now() / 1000);
-                    const differenceInSeconds = currentTime - timeSeconds;
-
-                    const years = Math.floor(differenceInSeconds / (365 * 24 * 60 * 60));
-                    const months = Math.floor((differenceInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
-                    const days = Math.floor((differenceInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
-                    const hours = Math.floor((differenceInSeconds % (24 * 60 * 60)) / (60 * 60));
-
-                    let result = '';
-
-                    if (years > 0) {
-                        result += `${years} years `;
-                    }
-
-                    if (months > 0) {
-                        result += `${months} months `;
-                    }
-
-                    if (days > 0) {
-                        result += `${days} days `;
-                    }
-
-                    if (hours > 0) {
-                        result += `${hours} hours`;
-                    }
-
-                    return result.trim() || 'Less than an hour ago';
-                }
-
-                if (locals.user) { %>
-        <canvas id="myChart" style="width:100%;max-width:900px; margin:auto; display:block;"></canvas>
-
-        <table>
-            <tbody>
-                <tr>
-                    <td>Image</td>
-                    <td><img src="<%= locals.user.avatar %>" alt="Avatar" style="max-width: 100%;"></td>
-                </tr>
-                <tr>
-                    <td>Codeforces Handle:</td>
-                    <td><%= locals.user.handle %></td>
-                </tr>
-                <tr>
-                    <td>Rating:</td>
-                    <td><%= locals.user.rating %> (Max: <%= locals.user.maxRating %>)</td>
-                </tr>
-                <tr>
-                    <td>Rank:</td>
-                    <td><%= locals.user.rank %> (Max: <%= locals.user.maxRank %>)</td>
-                </tr>
-                <tr>
-                    <td>Name:</td>
-                    <td><%= locals.user.firstName %> <%= locals.user.lastName %></td>
-                </tr>
-                <tr>
-                    <td>City & Country</td>
-                    <td><%= locals.user.country %>, <%= locals.user.city %></td>
-                </tr>
-                <tr>
-                    <td>Registration Time:</td>
-                    <td><%= calculateTimeDifference(locals.user.registrationTimeSeconds) %></td>
-                </tr>
-                <tr>
-                    <td>Last Online Time:</td>
-                    <td><%= calculateTimeDifference(locals.user.lastOnlineTimeSeconds) %></td>
-                </tr>
-                <tr>
-                    <td>Organization:</td>
-                    <td><%= locals.user.organization %></td>
-                </tr>
-            </tbody>
-        </table>
-        <% } else { %>
-        <div class="default-data-container">
-            <div class="default-data">
-                <i class="fa-brands fa-buffer"></i>
-                <p>No data available / Error fetching user details </p>
-                <p>Enter a valid Codeforces id</p>
+    <div class="container">
+        <div class="left">
+            <div class="user-details">
+                <%
+                    try {
+                        function calculateTimeDifference(timeSeconds) {
+                            const currentTime = Math.floor(Date.now() / 1000);
+                            const differenceInSeconds = currentTime - timeSeconds;
+        
+                            const years = Math.floor(differenceInSeconds / (365 * 24 * 60 * 60));
+                            const months = Math.floor((differenceInSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60));
+                            const days = Math.floor((differenceInSeconds % (30 * 24 * 60 * 60)) / (24 * 60 * 60));
+                            const hours = Math.floor((differenceInSeconds % (24 * 60 * 60)) / (60 * 60));
+        
+                            let result = '';
+        
+                            if (years > 0) {
+                                result += `${years} years `;
+                            }
+        
+                            if (months > 0) {
+                                result += `${months} months `;
+                            }
+        
+                            if (days > 0) {
+                                result += `${days} days `;
+                            }
+        
+                            if (hours > 0) {
+                                result += `${hours} hours`;
+                            }
+        
+                            return result.trim() || 'Less than an hour ago';
+                        }
+        
+                        if (locals.user) { %>
+        
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Image</td>
+                            <td><img src="<%= locals.user.avatar %>" alt="Avatar" style="max-width: 100%;"></td>
+                        </tr>
+                        <tr>
+                            <td>Codeforces Handle:</td>
+                            <td><%= locals.user.handle %></td>
+                        </tr>
+                        <tr>
+                            <td>Rating:</td>
+                            <td><%= locals.user.rating %> (Max: <%= locals.user.maxRating %>)</td>
+                        </tr>
+                        <tr>
+                            <td>Rank:</td>
+                            <td><%= locals.user.rank %> (Max: <%= locals.user.maxRank %>)</td>
+                        </tr>
+                        <tr>
+                            <td>Name:</td>
+                            <td><%= locals.user.firstName %> <%= locals.user.lastName %></td>
+                        </tr>
+                        <tr>
+                            <td>City & Country</td>
+                            <td><%= locals.user.country %>, <%= locals.user.city %></td>
+                        </tr>
+                        <tr>
+                            <td>Registration Time:</td>
+                            <td><%= calculateTimeDifference(locals.user.registrationTimeSeconds) %></td>
+                        </tr>
+                        <tr>
+                            <td>Last Online Time:</td>
+                            <td><%= calculateTimeDifference(locals.user.lastOnlineTimeSeconds) %></td>
+                        </tr>
+                        <tr>
+                            <td>Organization:</td>
+                            <td><%= locals.user.organization %></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <% } else { %>
+                <div class="default-data-container">
+                    <div class="default-data">
+                        <i class="fa-brands fa-buffer"></i>
+                        <p>No data available / Error fetching user details </p>
+                        <p>Enter a valid Codeforces id</p>
+                    </div>
+                </div>
+                <% }
+                    } catch (error) { %>
+                <div class="default-data-container">
+                    <div class="default-data">
+                        <i class="fa-brands fa-buffer"></i>
+                        <p>Error fetching user details. Please try again.</p>
+                    </div>
+                </div>
+                <% } %>
             </div>
+        
+            
+
+
+
         </div>
-        <% }
-            } catch (error) { %>
-        <div class="default-data-container">
-            <div class="default-data">
-                <i class="fa-brands fa-buffer"></i>
-                <p>Error fetching user details. Please try again.</p>
-            </div>
+        <div class="right">
+            <canvas id="myChart" style="width:100%;max-width:600px;height: 480px; margin:auto; display:block;"></canvas>
+
+            
         </div>
-        <% } %>
+
+        
     </div>
 
+    
     <script>
         const xValues = <%= JSON.stringify(locals.originalTimeFramesList) %>;
         const yValues = <%= JSON.stringify(locals.newRatings) %>;

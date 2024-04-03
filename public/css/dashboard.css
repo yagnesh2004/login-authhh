@@ -36,13 +36,13 @@ td {
     border: 10px;
     padding: 20px;
     text-align: center;
-    border: 25px solid #202222b2;
+    border: 20px solid #20222252;
     color: #939393; /* Adjusted border */
 }
 
 th {
     font-weight: 400;
-    background-color: #16181c;
+    background-color: #16181ca9;
     color: #e1e1df;
     font-size: 20px;
 }
