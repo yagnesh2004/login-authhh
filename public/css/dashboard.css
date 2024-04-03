@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 /* General Styling */
 body {
-    background-color: #16181c;
+    background-color: #0d1117;
     font-family: "Sora", sans-serif;
     color: #747777;
     margin: 0;
@@ -22,12 +22,12 @@ h1 {
 /* Table Styles */
 table {
     font-family: "Sora", sans-serif;
-    background-color: #16181c;
+    background-color: #0d1117;
 
     border-collapse: collapse;
     width: 90%;
     margin: 0 auto;
-    border: 25px solid white; /* Increased border to 25px */
+    border: 20px solid white; /* Increased border to 25px */
     margin-top: 20px;
 }
 
@@ -42,7 +42,7 @@ td {
 
 th {
     font-weight: 400;
-    background-color: #333333cc;
+    background-color: #16181c;
     color: #e1e1df;
     font-size: 20px;
 }
@@ -125,7 +125,7 @@ form button:hover {
     justify-content: center;
     margin: 18px auto; /* Center the rating container and adjust top/bottom margin */
     padding: 10px;
-    background-color:#16181c;
+    background-color:#0d1117;
     overflow-x: auto; /* Enable horizontal scrolling if needed */
 }
 
@@ -170,7 +170,7 @@ form button:hover {
 /* Navigation Styles */
 /* Navigation Styles */
 nav {
-    background-color: #202222;
+    background-color: #010409;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -207,7 +207,7 @@ nav a:hover::after {
 
 nav a:hover {
     border-radius: 15px;
-    background-color: #333333;
+    background-color: #171b20;
     color: #ffffff;
     transition: all 0.3s;
 }

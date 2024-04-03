@@ -83,6 +83,10 @@
         font-family: "Playfair Display", serif;
         font-style: italic;
     }
+    .container img{
+        width: 100px;
+
+    }
 
     small {
         display: block;
@@ -179,6 +183,7 @@
     }
 
     nav a {
+        background-color: #010409;
         font-size: 16px;
         color: #c2c4c5;
         text-align: center;
@@ -206,7 +211,7 @@
 
     nav a:hover {
         border-radius: 15px;
-        background-color: #333333;
+        background-color: #171b20;
         color: #ffffff;
         transition: all 0.3s;
     }
@@ -264,6 +269,13 @@
         margin: 0;
         padding: 0;
     }
+    .Tilte-tab {
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    font-size: 50px; /* Set font size to 50 pixels */
+    display: flex; /* Enable flexbox layout */
+}
+
 
     /* Header Styles */
         h1 {
@@ -287,12 +299,15 @@
         margin: 0 auto;
         width: 80%;
     }
+    .card img{
+        width: 70px;
+    }
     .card {
     border: 1px solid grey;
     border-radius: 30px;
     margin: 30px 10px; /* Increase margin to add space between cards */
     padding: 20px;
-    width: 20%; /* Adjust width to 20% */
+    width: 25%; /* Adjust width to 20% */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -308,15 +323,16 @@
     }
 
     .card img {
-        width: 100px; /* Adjust image width */
-        height: 70px; /* Adjust image height */
+        width: 180px; /* Adjust image width */
+        height: 100px; /* Adjust image height */
         margin-bottom: 10px;
+        border-radius: 10px;
     }
 </style>
 
 <body>
     <div class="navi">
-        <nav style="background-color: #202222;">
+        <nav style="background-color: #010409;">
             <div class="left-links">
                 <i class="fa-brands fa-squarespace"
                     style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
@@ -331,7 +347,7 @@
                 <a href="/dashboard">Practice</a>
                 <a href="/analyzer">Analyze</a>
                 <a href="/blog">Blog</a>
-                <a href="/explore" style="background-color:#333333;color: #ffffff;border-radius: 15px;">Explore</a>
+                <a href="/explore" style="background-color:#171b20;color: #ffffff;border-radius: 15px;">Explore</a>
             </div>
             <div class="right-links">
                 <a href="#" id="theme-toggle" onclick="toggleTheme()"><i class="far fa-sun"></i></a>
@@ -343,7 +359,9 @@
             </div>
         </nav>
     </div>
-    <h1>Fellowship</h1>
+    <h1>Student opportunitie's</h1>
+    <h2 class="Tilte-tab" style="justify-content: center;align-items: center; ">Fellwship's</h2>
+
     <div class="container">
         <% fello.forEach(item => { %>
         <div class="card">
@@ -351,9 +369,37 @@
             <h2><%= item.title %></h2>
             <p><a href="<%= item.application %>" target="_blank">Application Link</a></p>
             <p ><a href="<%= item.read %>" target="_blank">Read More</a></p>
+            <h4>#<%= item.name %></h4>
+
         </div>
         <% }) %>
     </div>
+    
+    <h2 class="Tilte-tab" style="justify-content: center;align-items: center; ">Resources</h2>
+    <div class="container">
+        <% Resources.forEach(item => { %>
+        <div class="card">
+            <img src="<%= item.image %>" alt="<%= item.title %> Image">
+            <h2><%= item.title %></h2>
+            <p><a href="<%= item.Link %>" target="_blank">More</a></p>
+            <h4>#<%= item.name %></h4>
+
+        </div>
+        <% }) %>
+    </div>
+    <h2 class="Tilte-tab" style="justify-content: center;align-items: center; ">hackathon</h2>
+    <div class="container">
+        <% hack.forEach(item => { %>
+        <div class="card">
+            <img src="<%= item.image %>" alt="<%= item.title %> Image">
+            <h2><%= item.title %></h2>
+            <p><a href="<%= item.Link %>" target="_blank">Participate</a></p>
+            <h4>#<%= item.name %></h4>
+
+        </div>
+        <% }) %>
+    </div>
+   
     
 </body>
 

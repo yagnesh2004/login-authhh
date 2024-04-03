@@ -8,6 +8,7 @@ const port = 4000;
 // In-memory data store
 let posts = [
   {
+    
     id: 1,
     title: "What is Open AI's Sora? ",
     content:
