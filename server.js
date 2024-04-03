@@ -280,6 +280,8 @@ const fello = [
         image: "/images/lfx.jpg",
         application: "https://mentorship.lfx.linuxfoundation.org/#projects_all",
         read: "https://lfx.linuxfoundation.org/tools/mentorship/",
+        name:"Tech",
+
     },
     {
         id: 2,
@@ -287,6 +289,8 @@ const fello = [
         image: "/images/mlh.jpg",
         application: "https://www.tfaforms.com/4956119",
         read: "https://lfx.linuxfoundation.org/tools/mentorship/",
+        name:"Tech",
+
     },
     {
         id: 3,
@@ -294,6 +298,8 @@ const fello = [
         image: "/images/cncf.jpg",
         application: "https://github.com/cncf/mentoring",
         read: "https://www.cncf.io/",
+        name:"Tech",
+
     },
     {
         id: 4,
@@ -301,6 +307,8 @@ const fello = [
         image: "/images/lfn.png",
         application: "https://wiki.lfnetworking.org/display/LN/LFN+Mentorship+Program#LFNMentorshipProgram-MenteeStipends",
         read: "https://lfnetworking.org/",
+        name:"Tech",
+
     },
     {
         id: 5,
@@ -308,6 +316,8 @@ const fello = [
         image: "/images/yc.png",
         application: "https://www.ycombinator.com/apply",
         read: "https://www.ycombinator.com/",
+        name:"Entrepreneurship",
+
     },
     {
         id: 6,
@@ -315,6 +325,8 @@ const fello = [
         image: "/images/theil.jpg",
         application: "https://thielfellowship.org/apply",
         read: "https://thielfellowship.org/",
+        name:"Entrepreneurship",
+
     },
     {
         id: 7,
@@ -322,14 +334,74 @@ const fello = [
         image: "/images/NAROPA.png",
         application: "https://www.naropafellowship.org/about-the-fellowship.html",
         read: "https://www.naropafellowship.org/apply.html",
+        name:"Entrepreneurship",
+
+    },
+    {
+        id: 8,
+        title: "Google Summer of Code",
+        image: "/images/gsoc.png",
+        application: "https://opensource.googleblog.com/2023/11/google-summer-of-code-2024-celebrating-20th-year.html",
+        read: "https://summerofcode.withgoogle.com/",
+        name:"Open source",
+    },
+    {
+        id: 9,
+        title: "Github campus expert",
+        image: "/images/github.jpg",
+        application: "https://education.github.com/campus_experts",
+        read: "https://education.github.com/experts",
+        name:"Tech",
+
     },
 ];
+const Resources = [
 
+    {
+        id: 1,
+        title: "Roadmaps Repo",
+        image: "/images/githubl.png",
+        Link: "https://github.com/WeMakeDevs/roadmaps",
+        name:"Tech",
+        
+
+    },
+    {
+        id: 1,
+        title: "freecodecamp",
+        image: "/images/free.png",
+        Link: "https://www.freecodecamp.org/",
+        name:"Tech",
+
+    },
+    {
+        id: 1,
+        title: "Harvard cs50",
+        image: "/images/cs50.png",
+        Link: "https://www.youtube.com/playlist?list=PLhQjrBD2T380F_inVRXMIHCqLaNUd7bN4",
+        name:"#Learn",
+
+    },
+];
+const hack = [
+
+    {
+        id: 1,
+        title: "ETHIndia Grants (2nd edition)",
+        image: "/images/ethindia.jpg",
+        Link: "https://ethindiagrants2023.devfolio.co/",
+        name:"#Tech, #Blockchain",
+        mode:"Online, Devfolio",
+        
+
+    },
+ 
+];
 
 app.set('view engine', 'ejs');
 
 app.get('/explore', (req, res) => {
-    res.render('opportunities', { uname: req.session.username, fello: fello });
+    res.render('opportunities', { uname: req.session.username, fello: fello,Resources:Resources ,hack:hack});
 });
 
 // Route to handle logout
@@ -449,7 +521,7 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
                 problems: null,
                 handle, // Pass handle to the template
                 storedRating: null,
-                error: 'Error fetching problems'
+                error: 'Error fetching problems, API 403 Forbidden Error'
             });
 
         }
