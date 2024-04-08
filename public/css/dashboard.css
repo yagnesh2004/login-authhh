@@ -27,16 +27,18 @@ table {
     border-collapse: collapse;
     width: 90%;
     margin: 0 auto;
-    border: 20px solid white; /* Increased border to 25px */
+    border: 10px solid white; /* Increased border to 25px */
     margin-top: 20px;
 }
 
 th,
 td {
+    font-size: 18px;
+    height: 5px;
     border: 10px;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
-    border: 20px solid #20222252;
+    border: 10px solid #20222252;
     color: #939393; /* Adjusted border */
 }
 

@@ -188,7 +188,7 @@ tr:hover {
 <tr onclick="window.open('<%= `https://codeforces.com/problemset/problem/${problem.contestId}/${problem.index}` %>','_blank');" style="cursor: pointer;">
     <td><%= index + 1 %></td>
     <td style="color: <%= statusColor %>;">
-        <span style="font-size: 20px;"><%= problem.name %></span>
+        <span style=""><%= problem.name %></span>
         <% if (locals.uniqueAcceptedProblems.includes(problem.name)) { %>
         <i class="fas fa-check-circle" style="color: #83ff83;"></i><% /* Display checkmark for accepted */ %>
         <% } %>
@@ -205,7 +205,7 @@ tr:hover {
         <% } else if (locals.timeLimitExceededProblems.includes(problem.name)) { %>
         TLE<% /* Time Limit Exceeded */ %>
         <% } else if (locals.wrongAnswerProblems.includes(problem.name)) { %>
-        Wrong Answer<% /* Wrong Answer */ %>
+        WA<% /* Wrong Answer */ %>
         <% } else { %>
         -<% /* Default */ %>
         <% } %>
