@@ -1,0 +1,4 @@
+// <td style="color: <%= tagColor %>;">
+    //     <%= problem.tags.join(', ') %>
+    // </td>
+                            <th>Tags</th>

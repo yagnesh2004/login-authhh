@@ -55,13 +55,9 @@ app.set('view engine', 'ejs');
 
 // Create a PostgreSQL pool
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'login',
-    password: 'Yagnesh@123',
-    port: 5432,
-});
-
+    connectionString: process.env.POSTGRES_URL ,
+  }
+)
 // Create a nodemailer transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -183,7 +179,7 @@ app.post('/login', async (req, res) => {
 
                 console.log(username + " Logged in");
 
-                res.redirect('/guide');
+                res.redirect('/dashboard');
             } else {
                 res.render('login.ejs', { error: 'Invalid username or password' });
             }
