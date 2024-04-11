@@ -62,7 +62,7 @@ tr,th{
 
             </div>
             <div class="right-links">
-                <a href="/profile" rel="noopener noreferrer" style="background-color:#333333;color: #ffffff;border-radius: 15px;"><i class="fa-solid fa-user"></i>  <%= uname %><i class="fa-solid fa-angle-down"></i></a>
+                <a href="/profile" rel="noopener noreferrer" style="background-color:#333333;color: #ffffff;border-radius: 15px;"><i class="fa-solid fa-user"></i> <i class="fa-solid fa-angle-down"></i></a>
                 <a href="/logout" class="logout-container"><i class="fa-solid fa-right-from-bracket"></i></a>
             </div>
         </nav>
@@ -79,19 +79,15 @@ tr,th{
             <tbody>
                 <tr>
                     <td><strong>Username:</strong></td>
-                    <td><%= user.username %></td>
                 </tr>
                 <tr>
                     <td><strong>First Name:</strong></td>
-                    <td><%= user.first_name %></td>
                 </tr>
                 <tr>
                     <td><strong>Last Name:</strong></td>
-                    <td><%= user.last_name %></td>
                 </tr>
                 <tr>
                     <td><strong>Email:</strong></td>
-                    <td><%= user.email %></td>
                 </tr>
             </tbody>
         </table>
