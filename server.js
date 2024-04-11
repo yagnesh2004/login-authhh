@@ -11,7 +11,6 @@ const moment = require('moment-timezone');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_URL = "http://localhost:4000";
-app.use(express.static(path.join(__dirname, 'public')));
 
 let posts = [
     {
@@ -86,10 +85,11 @@ function getUserCountry() {
     return 'US'; // Example country code for demonstration
 }
 
-// Route to render the home page
+// Route to redirect to the dashboard
 app.get('/', (req, res) => {
-    res.render('index.ejs');
+    res.redirect('/dashboard');
 });
+
 
 // Route to render the signup form
 app.get('/signup', (req, res) => {
