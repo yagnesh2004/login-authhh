@@ -55,9 +55,12 @@ app.set('view engine', 'ejs');
 
 // Create a PostgreSQL pool
 const pool = new Pool({
-    connectionString: process.env.POSTGRES_URL ,
-  }
-)
+    user: 'postgres',
+    host: 'localhost',
+    database: 'login',
+    password: 'Yagnesh@123',
+    port: 5432,
+});
 // Create a nodemailer transporter
 const transporter = nodemailer.createTransport({
     service: 'gmail',

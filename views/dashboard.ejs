@@ -30,11 +30,9 @@ tr:hover {
                 <div class="logo" style="background: linear-gradient(to right, #7500aa, #2b86c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dork</div>
             </div>
             <div class="center-links">
-                <a href="/guide" >Guide</a>
 
                 <a href="/dashboard" style="background-color:#171b20;color: #ffffff;border-radius: 15px;">Practice</a>
                 <a href="/analyzer">Analyze</a>
-                <a href="/blog">Blog</a>
                 <a href="/explore">Explore</a>
 
             </div>
@@ -168,9 +166,9 @@ tr:hover {
     let tagColor, ratingColor, statusColor;
 
     if (locals.uniqueAcceptedProblems.includes(problem.name)) {
-        tagColor = '#53fe53'; // Green for accepted
-        ratingColor = '#53fe53';
-        statusColor = '#53fe53';
+        tagColor = '#83ff83'; // Green for accepted
+        ratingColor = '#83ff83';
+        statusColor = '#83ff83';
     } else if (locals.timeLimitExceededProblems.includes(problem.name)) {
         tagColor = 'orange'; // Orange for Time Limit Exceeded
         ratingColor = 'orange';
