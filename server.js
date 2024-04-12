@@ -84,10 +84,17 @@ function getUserCountry() {
     // Logic to determine user's country based on their IP address or any other method
     return 'US'; // Example country code for demonstration
 }
+const server = http.createServer((req, res) => {
+    // Set the response header
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    // Write some text to the response
+    res.end('Welcome to my simple Node.js app!');
+});
+ 
 
 // Route to redirect to the dashboard
 app.get('/', (req, res) => {
-    res.redirect('/dashboard');
+    res.render('index.ejs');
 });
 
 
