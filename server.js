@@ -7,6 +7,7 @@ const multer = require('multer');
 const { Pool } = require('pg');
 const axios = require('axios');
 const moment = require('moment-timezone');
+const http = require('http'); // Add this line to import the http module
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -225,7 +226,7 @@ app.post('/analyzer', async (req, res) => {
 
         const response = await axios.get(apiUrl);
         const user = response.data.result[0];
-        console.log(user);
+        console.log("User name ",user);
 
         // Extracting new ratings from the user's rating history
         const newRatings = responseGraph.data.result.map(entry => entry.newRating);
@@ -247,9 +248,7 @@ function getupdatedDta(ratingUpdates) {
 // Usage example:
 const updatedTime=getupdatedDta(ratingUpdates);
 const originalTimeFramesList = getOriginalTimeFramesList(ratingUpdates);
-console.log(originalTimeFramesList);
 
-        console.log("amsbdfjsbdfkjsadbfhj")
 
         // List of rating marks
         const ratingMarks = [0,1200, 1400, 1600, 1900, 2100, 2300, 2400, 2600, 3000];
@@ -480,9 +479,8 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
         });
 
         // Log the arrays for verification
-        console.log(wrongAnswerProblems);
-        console.log(timeLimitExceededProblems);
-        console.log(uniqueAcceptedProblems);
+        console.log("Practice tab activated");
+    
 
         // Count total solved problems
         totalSolvedProblems = uniqueAcceptedProblems.length;
