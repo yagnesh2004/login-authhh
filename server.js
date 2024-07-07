@@ -7,7 +7,10 @@ const multer = require('multer');
 const { Pool } = require('pg');
 const axios = require('axios');
 const moment = require('moment-timezone');
+const requestIp = require('request-ip');
+
 const http = require('http'); // Add this line to import the http module
+let currentVisitors = 0;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -169,9 +172,15 @@ app.get('/guide', (req, res) => {
         res.status(500).render('error.ejs', { error: 'An error occurred while rendering the guide page' });
     }
 });
+app.use(session({
+    secret: '199a7c3cdecb4b29a2fbbbd5c626b126',
+    resave: false,
+    saveUninitialized: true,
+}));
 
+// Middleware to extract client IP address
+app.use(requestIp.mw());
 
-// Route to handle login form submission
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -184,13 +193,42 @@ app.post('/login', async (req, res) => {
                 req.session.userId = result.rows[0].id;
                 req.session.username = result.rows[0].username;
 
-                const loginTime = moment().utc().format("X");
-                const country = getUserCountry();
+                const loginTime = moment().unix();  // Get current Unix timestamp
+                const ipAddress = req.clientIp; // Get the client's public IP address
 
-                const insertQuery = `INSERT INTO login_data (user_name, login_time, country) VALUES ($1, $2, $3);`;
-                await pool.query(insertQuery, [username, loginTime, country]);
+                // Fetch geolocation data from the API
+                const geoResponse = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=199a7c3cdecb4b29a2fbbbd5c626b126&ip=${ipAddress}`);
+                const geoData = geoResponse.data;
 
-                console.log(username + " Logged in");
+                const insertQuery = `
+                    INSERT INTO login_data (
+                        user_name, login_time, country, ip_address, isp, country_flag, district, city, 
+                        zipcode, latitude, longitude, country_name, ip, hostname, continent_code, current_time_unix
+                    ) VALUES (
+                        $1, to_timestamp($2), $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16
+                    );
+                `;
+
+                await pool.query(insertQuery, [
+                    username, 
+                    loginTime, 
+                    geoData.country_name, 
+                    ipAddress, 
+                    geoData.isp, 
+                    geoData.country_flag, 
+                    geoData.district, 
+                    geoData.city, 
+                    geoData.zipcode, 
+                    geoData.latitude, 
+                    geoData.longitude, 
+                    geoData.country_name, 
+                    geoData.ip, 
+                    geoData.hostname, 
+                    geoData.continent_code, 
+                    Math.floor(geoData.time_zone.current_time_unix) // Convert to integer
+                ]);
+
+                console.log(`${username} Logged in from IP: ${ipAddress}`);
 
                 res.redirect('/dashboard');
             } else {
@@ -666,6 +704,8 @@ app.get("/edit/:id(\\d+)", async (req, res) => {
     posts.splice(index, 1);
     res.json({ message: "Post deleted" });
   });
+  
+
 
   
   app.listen(PORT, () => {
