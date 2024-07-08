@@ -95,10 +95,39 @@ const server = http.createServer((req, res) => {
     res.end('Welcome to my simple Node.js app!');
 });
  
+app.use(requestIp.mw());
+app.get('/', async (req, res) => {
+    try {
+        const ipAddress = req.clientIp;
 
-// Route to redirect to the dashboard
-app.get('/', (req, res) => {
-    res.render('index.ejs');
+        if (!ipAddress) {
+            throw new Error('Unable to retrieve client IP address.');
+        }
+
+        const apiKey = '2fcf0012e73a4cbca8ac5de1265d3d00'; // Replace with your actual API key
+        const apiUrl = `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}&ip=${ipAddress}`;
+
+        const response = await axios.get(apiUrl);
+        const geoData = response.data;
+
+        const { isp, country_flag, district, city, zipcode, latitude, longitude, country_name, ip, hostname, continent_code } = geoData;
+
+        // Get current timestamp in JavaScript
+        const currentTimestamp = new Date().toISOString();
+
+        const insertQuery = `
+            INSERT INTO visiter (isp, country_flag, district, city, zipcode, latitude, longitude, country_name, ip, hostname, continent_code, timestamp)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);
+        `;
+        await pool.query(insertQuery, [isp, country_flag, district, city, zipcode, latitude, longitude, country_name, ip, hostname, continent_code, currentTimestamp]);
+
+        console.log(`Visitor's geolocation data inserted into database.`);
+
+        res.render('index.ejs', { geoData });
+    } catch (error) {
+        console.error('Error fetching or inserting geolocation data:', error);
+        res.status(500).send('Error fetching or inserting geolocation data');
+    }
 });
 
 
@@ -556,7 +585,7 @@ const uniqueAcceptedProblems = [...new Set(acceptedSubmissions.map(submission =>
                 problems: null,
                 handle, // Pass handle to the template
                 storedRating: null,
-                error: 'Dork want some data'
+                error: 'Enter your codeforces hande, Ex: tourist, graphs'
             });
         } else {
             res.render('dashboard', {
