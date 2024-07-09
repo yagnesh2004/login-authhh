@@ -8,7 +8,8 @@ const { Pool } = require('pg');
 const axios = require('axios');
 const moment = require('moment-timezone');
 const requestIp = require('request-ip');
-
+const databaseUrl = process.env.DATABASE_URL;
+require('dotenv').config();
 const http = require('http'); // Add this line to import the http module
 let currentVisitors = 0;
 
@@ -740,3 +741,4 @@ app.get("/edit/:id(\\d+)", async (req, res) => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+module.exports = app;
